@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WIRI — Outreach CRM</title>
+<link href="https://fonts.googleapis.com/css2?family=Lusitana:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --terracotta: #AA3300;
+    --brown: #281407;
+    --cream: #FFFBF3;
+    --gold: #C87C2A;
+    --gold-light: #E8A84A;
+    --muted: #8B6E5A;
+    --border: rgba(40,20,7,0.12);
+    --success: #4A7C59;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--cream); color: var(--brown); font-family: 'DM Sans', sans-serif; font-size: 14px; min-height: 100vh; }
+
+  /* HEADER */
+  .header { background: var(--brown); padding: 24px 48px; display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid var(--gold); }
+  .header-left { display: flex; align-items: baseline; gap: 16px; }
+  .wordmark { font-family: 'Lusitana', serif; font-size: 28px; font-weight: 700; color: var(--cream); letter-spacing: 0.08em; }
+  .header-sub { font-size: 11px; font-weight: 300; color: var(--gold); letter-spacing: 0.2em; text-transform: uppercase; }
+  .header-right { display: flex; align-items: center; gap: 12px; }
+  .sync-btn { background: var(--terracotta); color: var(--cream); border: none; padding: 10px 22px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; }
+  .sync-btn:hover { background: #8B2800; }
+  .sync-btn:disabled { background: var(--muted); cursor: not-allowed; }
+  .auth-btn { background: transparent; color: var(--gold); border: 1px solid var(--gold); padding: 10px 22px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
+  .auth-btn:hover { background: var(--gold); color: var(--brown); }
+  .last-sync { font-size: 11px; color: var(--gold); letter-spacing: 0.05em; }
+  .auth-status { font-size: 11px; letter-spacing: 0.05em; }
+  .auth-status.connected { color: #6BAF82; }
+  .auth-status.disconnected { color: var(--muted); }
+
+  /* SETUP BANNER */
+  .setup-banner { background: var(--brown); border-left: 3px solid var(--gold); margin: 28px 48px; padding: 20px 24px; display: none; }
+  .setup-banner.visible { display: block; }
+  .setup-banner h3 { font-family: 'Lusitana', serif; font-size: 15px; color: var(--cream); margin-bottom: 10px; }
+  .setup-banner p { color: var(--gold-light); font-size: 13px; margin-bottom: 14px; line-height: 1.6; }
+  .setup-steps { list-style: none; counter-reset: steps; }
+  .setup-steps li { counter-increment: steps; color: var(--gold-light); font-size: 13px; padding: 6px 0 6px 28px; position: relative; line-height: 1.5; }
+  .setup-steps li::before { content: counter(steps); position: absolute; left: 0; top: 6px; width: 18px; height: 18px; background: var(--gold); color: var(--brown); border-radius: 50%; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  .setup-steps a { color: var(--gold); }
+  .client-id-row { display: flex; gap: 10px; align-items: center; margin-top: 14px; }
+  .client-id-input { background: rgba(255,251,243,0.08); border: 1px solid rgba(200,124,42,0.4); color: var(--cream); padding: 10px 14px; font-family: 'DM Sans', sans-serif; font-size: 13px; flex: 1; outline: none; }
+  .client-id-input:focus { border-color: var(--gold); }
+  .client-id-save { background: var(--gold); color: var(--brown); border: none; padding: 10px 20px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; white-space: nowrap; }
+
+  /* STATS BAR */
+  .stats-bar { display: grid; grid-template-columns: repeat(5, 1fr); border-bottom: 1px solid var(--border); margin: 0 48px; }
+  .stat { padding: 22px 20px; border-right: 1px solid var(--border); text-align: center; }
+  .stat:last-child { border-right: none; }
+  .stat-num { font-family: 'Lusitana', serif; font-size: 32px; font-weight: 700; color: var(--terracotta); display: block; line-height: 1; margin-bottom: 6px; }
+  .stat-label { font-size: 10px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+
+  /* MAIN LAYOUT */
+  .main { padding: 28px 48px; display: grid; grid-template-columns: 1fr 300px; gap: 28px; }
+
+  /* SECTION HEADER */
+  .section-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 14px; }
+  .section-title { font-family: 'Lusitana', serif; font-size: 18px; font-weight: 700; color: var(--brown); }
+  .section-count { font-size: 11px; color: var(--muted); letter-spacing: 0.1em; }
+
+  /* SYNC STATUS BAR */
+  .sync-status { padding: 10px 14px; font-size: 12px; background: rgba(40,20,7,0.04); color: var(--muted); margin-bottom: 14px; border-left: 2px solid var(--gold); display: none; line-height: 1.5; }
+  .sync-status.visible { display: block; }
+
+  /* FILTER TABS */
+  .filter-tabs { display: flex; margin-bottom: 14px; border-bottom: 1px solid var(--border); }
+  .filter-tab { padding: 8px 18px; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; background: none; border-top: none; border-left: none; border-right: none; font-family: 'DM Sans', sans-serif; transition: color 0.15s; }
+  .filter-tab.active { color: var(--terracotta); border-bottom-color: var(--terracotta); }
+  .filter-tab:hover { color: var(--brown); }
+
+  /* TABLE */
+  .contact-table { width: 100%; border-collapse: collapse; }
+  .contact-table thead th { text-align: left; font-size: 10px; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); padding: 10px 12px; border-bottom: 1px solid var(--border); background: rgba(40,20,7,0.03); }
+  .contact-row { border-bottom: 1px solid var(--border); transition: background 0.15s; cursor: pointer; }
+  .contact-row:hover { background: rgba(170,51,0,0.03); }
+  .contact-row td { padding: 12px 12px; vertical-align: middle; }
+  .contact-name { font-weight: 500; color: var(--brown); font-size: 14px; }
+  .contact-handle { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .contact-email { font-size: 12px; color: var(--muted); font-weight: 300; }
+
+  /* STATUS */
+  .status { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .status.not-sent { background: rgba(40,20,7,0.06); color: var(--muted); }
+  .status.not-sent .status-dot { background: var(--muted); }
+  .status.sent { background: rgba(200,124,42,0.1); color: var(--gold); }
+  .status.sent .status-dot { background: var(--gold); }
+  .status.replied { background: rgba(74,124,89,0.1); color: var(--success); }
+  .status.replied .status-dot { background: var(--success); }
+  .status.follow-up { background: rgba(170,51,0,0.1); color: var(--terracotta); }
+  .status.follow-up .status-dot { background: var(--terracotta); animation: pulse 1.5s infinite; }
+  .status.follow-up-sent { background: rgba(40,20,7,0.06); color: var(--muted); }
+  .status.follow-up-sent .status-dot { background: var(--muted); }
+  @ceyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+
+  /* PRIORITY */
+  .priority { font-size: 9px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; padding: 2px 7px; border: 1px solid; }
+  .priority.top { border-color: var(--terracotta); color: var(--terracotta); }
+  .priority.high { border-color: var(--gold); color: var(--gold); }
+  .priority.med { border-color: var(--muted); color: var(--muted); }
+
+  /* DATE CELL */
+  .date-cell { font-size: 12px; color: var(--muted); }
+  .days-ago { font-size: 10px; color: var(--muted); font-weight: 300; }
+
+  /* NOTES */
+  .notes-cell input { border: none; background: transparent; font-family: 'DM Sans', sans-serif; font-size: 12px; color: var(--brown); width: 100%; outline: none; padding: 2px 0; cursor: text; }
+  .notes-cell input::placeholder { color: rgba(40,20,7,0.2); }
+  .notes-cell input:focus { border-bottom: 1px solid var(--gold); }
+
+  /* SIDEBAR */
+  .sidebar { display: flex; flex-direction: column; gap: 20px; }
+  .sidebar-card { border: 1px solid var(--border); padding: 18px; background: white; }
+  .sidebar-card-title { font-family: 'Lusitana', serif; font-size: 14px; font-weight: 700; color: var(--brown); margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+  .followup-item { display: flex; align-items: flex-start; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid var(--border); gap: 8px; }
+  .followup-item:last-child { border-bottom: none; }
+  .followup-name { font-size: 13px; font-weight: 500; color: var(--brown); }
+  .followup-detail { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .followup-badge { font-size: 10px; font-weight: 500; color: var(--terracotta); background: rgba(170,51,0,0.08); padding: 3px 8px; white-space: nowrap; flex-shrink: 0; }
+  .activity-item { padding: 9px 0; border-bottom: 1px solid var(--border); }
+  .activity-item:last-child { border-bottom: none; }
+  .activity-text { font-size: 12px; color: var(--brown); line-height: 1.5; }
+  .activity-time { font-size: 10px; color: var(--muted); margin-top: 3px; }
+  .activity-icon { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+  .icon-sent { background: var(--gold); }
+  .icon-replied { background: var(--success); }
+  .icon-followup { background: var(--terracotta); }
+
+  /* LOADING */
+  .loading-overlay { display: none; position: fixed; inset: 0; background: rgba(255,251,243,0.88); z-index: 100; align-items: center; justify-content: center; flex-direction: column; gap: 16px; }
+  .loading-overlay.visible { display: flex; }
+  .loading-text { font-family: 'Lusitana', serif; font-size: 20px; color: var(--brown); }
+  .loading-sub { font-size: 13px; color: var(--muted); }
+  .spinner { width: 32px; height: 32px; border: 2px solid var(--border); border-top-color: var(--terracotta); border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* EMPTY */
+  .empty-row td { padding: 40px; text-align: center; color: var(--muted); font-style: italic; font-size: 13px; }
+
+  /* TOAST */
+  .toast { position: fixed; bottom: 32px; right: 32px; background: var(--brown); color: var(--cream); padding: 14px 22px; font-size: 13px; z-index: 200; opacity: 0; transform: translateY(8px); transition: all 0.3s; pointer-events: none; border-left: 3px solid var(--gold); max-width: 320px; line-height: 1.4; }
+  .toast.show { opacity: 1; transform: translateY(0); }
+
+  .gold-rule { height: 1px; background: linear-gradient(to right, var(--gold), transparent); margin: 0 48px; opacity: 0.4; }
+</style>
+</head>
+<body>
+
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <div class="loading-text">Syncing with Gmail</div>
+  <div class="loading-sub" id="loadingMsg">Reading your sent mail...</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="header">
+  <div class="header-left">
+    <span class="wordmark">WIRI</span>
+    <span class="header-sub">Outreach CRM</span>
+  </div>
+  <div class="header-right">
+    <span class="auth-status disconnected" id="authStatus">● Not connected to Gmail</span>
+    <span class="last-sync" id="lastSyncLabel"></span>
+    <button class="auth-btn" id="authBtn" onclick="handleAuth()">Connect Gmail</button>
+    <button class="sync-btn" id="syncBtn" onclick="runSync()" disabled>↻ Sync</button>
+  </div>
+</div>
+
+<div class="gold-rule"></div>
+
+<!-- SETUP BANNER -->
+<div class="setup-banner" id="setupBanner">
+  <h3>One-time setup — connect Gmail in 3 steps</h3>
+  <p>This CRM reads your Gmail directly to detect sent emails and replies. You only do this once.</p>
+  <ol class="setup-steps">
+    <li>Go to <a href="https://console.cloud.google.com" target="_blank">console.cloud.google.com</a> → create a project → enable the <strong>Gmail API</strong></li>
+    <li>Go to <strong>APIs & Services → Credentials → Create OAuth 2.0 Client ID</strong>. Choose <em>Web application</em>. Add <code>http://localhost</code> and the URL of this file to Authorized JavaScript origins.</li>
+    <li>Copy your <strong>Client ID</strong> and paste it below, then click Save and Connect Gmail.</li>
+  </ol>
+  <div class="client-id-row">
+    <input class="client-id-input" type="text" id="clientIdInput" placeholder="123456789-abc.apps.googleusercontent.com" />
+    <button class="client-id-save" onclick="saveClientId()">Save & Connect Gmail</button>
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat"><span class="stat-num" id="statTotal">18</span><span class="stat-label">Total</span></div>
+  <div class="stat"><span class="stat-num" id="statSent">0</span><span class="stat-label">Sent</span></div>
+  <div class="stat"><span class="stat-num" id="statReplied">0</span><span class="stat-label">Replied</span></div>
+  <div class="stat"><span class="stat-num" id="statFollowUp">0</span><span class="stat-label">Follow-Up Due</span></div>
+  <div class="stat"><span class="stat-num" id="statPending">18</span><span class="stat-label">Not Sent</span></div>
+</div>
+
+<div class="gold-rule"></div>
+
+<div class="main">
+  <div>
+    <div class="section-header">
+      <span class="section-title">Creator Outreach</span>
+      <span class="section-count" id="tableCount">18 contacts</span>
+    </div>
+    <div class="sync-status" id="syncStatus"></div>
+    <div class="filter-tabs">
+      <button class="filter-tab active" onclick="filterTable('all',this)">All</button>
+      <button class="filter-tab" onclick="filterTable('not-sent',this)">Not Sent</button>
+      <button class="filter-tab" onclick="filterTable('sent',this)">Sent</button>
+      <button class="filter-tab" onclick="filterTable('follow-up',this)">Follow-Up Due</button>
+      <button class="filter-tab" onclick="filterTable('replied',this)">Replied</button>
+    </div>
+    <table class="contact-table">
+      <thead>
+        <tr>
+          <th>Contact</th>
+          <th>Email</th>
+          <th>Priority</th>
+          <th>Status</th>
+          <th>Sent</th>
+          <th>Last Activity</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody id="contactTableBody"></tbody>
+    </table>
+  </div>
+
+  <div class="sidebar">
+    <div class="sidebar-card">
+      <div class="sidebar-card-title">⚡ Follow-Ups Due</div>
+      <div id="followUpList"><p style="font-size:12px;color:var(--muted);font-style:italic;">No follow-ups due yet.</p></div>
+    </div>
+    <div class="sidebar-card">
+      <div class="sidebar-card-title">Recent Activity</div>
+      <div id="activityFeed"><p style="font-size:12px;color:var(--muted);font-style:italic;">Sync to load activity.</p></div>
+    </div>
+    <div class="sidebar-card">
+      <div class="sidebar-card-title">📬 Still to Send</div>
+      <div id="todoList"><p style="font-size:12px;color:var(--muted);font-style:italic;">Loading...</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- Google Identity Services -->
+<script src="https://accounts.google.com/gsi/client" async></script>
+
+<script>
+const CONTACTS = [
+  { id:1,  name:"Toni Bravo",             handle:"@bonitravo",           email:"alix@thedigitalbrandarchitects.com", subject:"Something for your shelf.",                priority:"top",  channel:"email" },
+  { id:2,  name:"Alison Roman",           handle:"@alisoneroman",        email:"contact@alisoneroman.com",           subject:"A bottle worth finding counter space for.", priority:"top",  channel:"email" },
+  { id:3,  name:"Jerrelle Guy",           handle:"@chocolateforbasil",   email:"hello@jerrelleguystudio.com",        subject:"Something I think you'd feel.",            priority:"top",  channel:"both"  },
+  { id:4,  name:"Ita Damon",              handle:"@kiaadamon",           email:"kia@kiadamon.com",                   subject:"A pepper you already know.",               priority:"top",  channel:"both"  },
+  { id:5,  name:"Hawa Hassan",            handle:"@hawabana",            email:"hawa@basicsauce.com",                subject:"One founder to another.",                  priority:"top",  channel:"email" },
+  { id:6,  name:"Meredith Hayden",        handle:"@wishbonekitchen",     email:"contact@wishbonekitchen.com",        subject:"Our taglines might be the same.",          priority:"top",  channel:"email" },
+  { id:7,  name:"Laila Gohar",            handle:"@lailacooks",          email:"hello@lailagohar.com",               subject:"An object with presence.",                 priority:"top",  channel:"email" },
+  { id:8,  name:"Athena Calderone",       handle:"@eyeswoon",            email:"hello@eyeswoon.com",                 subject:"For your table, not your pantry.",         priority:"top",  channel:"email" },
+  { id:9,  name:"Hetty McKinnon",         handle:"@hettymckinnon",       email:"hetty@hettymckinnon.com",            subject:"A pepper you might not have met yet.",     priority:"high", channel:"email" },
+  { id:10, name:"Carla Lalli Music",      handle:"@carlalallimusic",     email:"carla@carlalallimusic.com",          subject:"For your counter, not your cabinet.",      priority:"high", channel:"email" },
+  { id:11, name:"Zaynab Issa",            handle:"@zaynabissa",          email:"zaynabissa@gmail.com",               subject:"A bottle for your shelf.",                 priority:"high", channel:"both"  },
+  { id:12, name:"Carolina Gelen",         handle:"@carolinagelen",       email:"carolina@carolinagelen.com",         subject:"A pantry discovery worth making.",         priority:"high", channel:"email" },
+  { id:13, name:"Andy Baraghani",         handle:"@andybaraghani",       email:"andy@andybaraghani.com",             subject:"A bottle that earns its counter space.",   priority:"high", channel:"email" },
+  { id:14, name:"Maya-Camille Broussard", handle:"@justice_of_the_pies", email:"info@justiceofthepies.com",         subject:"A pepper with a story.",                   priority:"med",  channel:"both"  },
+  { id:15, name:"Rick Martinez",          handle:"@rick_andrew_martinez",email:"rick@rickmartinez.com",              subject:"A chili with a real story.",               priority:"med",  channel:"email" },
+  { id:16, name:"Sohla El-Waylly",         handle:"@sohlaelwaylly",       email:"sohla@sohlaelwaylly.com",            subject:"A pepper worth getting curious about.",    priority:"med",  channel:"email" },
+  { id:17, name:"Julia Turshen",          handle:"@turshen",             email:"julia@turshen.com",                  subject:"Something for your table.",                priority:"med",  channel:"email" },
+  { id:18, name:"Aaron Crowder",           handle:"@thefoodlord",         email:"thefoodlord@gmail.com",              subject:"A New York hot sauce you haven't heard of yet.", priority:"med", channel:"both" },
+];
+
+const FOLLOW_UP_DAYS = 8;
+const GMAIL_SCOPE = 'https://www.googleapis.com/auth/gmail.readonly';
+
+let state = { contacts: {}, activity: [], lastSync: null };
+let accessToken = null;
+let tokenClient = null;
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem('wiri-crm-v3');
+    if (saved) state = JSON.parse(saved);
+  } catch(e) {}
+  CONTACTS.forEach(c => {
+    if (!state.contacts[c.id]) {
+      state.contacts[c.id] = { status:'not-sent', sentAt:null, repliedAt:null, notes:'', lastActivity:null };
+    }
+  });
+  const savedToken = sessionStorage.getItem('wiri-gmail-token');
+  if (savedToken) { accessToken = savedToken; setAuthConnected(); }
+}
+
+function saveState() { localStorage.setItem('wiri-crm-v3', JSON.stringify(state)); }
+function getClientId() { return localStorage.getItem('wiri-client-id') || ''; }
+
+function saveClientId() {
+  const id = document.getElementById('clientIdInput').value.trim();
+  if (!id.includes('.apps.googleusercontent.com')) { showToast('Invalid Client ID format'); return; }
+  localStorage.setItem('wiri-client-id', id);
+  document.getElementById('setupBanner').classList.remove('visible');
+  showToast('Client ID saved. Click Connect Gmail.');
+  initGoogleAuth();
+}
+
+function initGoogleAuth() {
+  const clientId = getClientId();
+  if (!clientId) return;
+  if (typeof google === 'undefined') { setTimeout(initGoogleAuth, 500); return; }
+  tokenClient = google.accounts.oauth2.initTokenClient({
+    client_id: clientId,
+    scope: GMAIL_SCOPE,
+    callback: (response) => {
+      if (response.error) { showToast('Auth error: ' + response.error); return; }
+      accessToken = response.access_token;
+      sessionStorage.setItem('wiri-gmail-token', accessToken);
+      setAuthConnected();
+      showToast('Gmail connected! Hit Sync to scan your mail.');
+    },
+  });
+}
+
+function handleAuth() {
+  if (!getClientId()) { document.getElementById('setupBanner').classList.add('visible'); return; }
+  if (!tokenClient) {
+    initGoogleAuth();
+    setTimeout(() => { if (tokenClient) tokenClient.requestAccessToken(); else showToast('Google auth not loaded yet - try again.'); }, 600);
+    return;
+  }
+  tokenClient.requestAccessToken();
+}
+
+function setAuthConnected() {
+  document.getElementById('authStatus').textContent = '➑ Gmail connected';
+  document.getElementById('authStatus').className = 'auth-status connected';
+  document.getElementById('authBtn').textContent = 'Reconnect';
+  document.getElementById('syncBtn').disabled = false;
+}
+
+async function gmailSearch(query) {
+  const res = await fetch(`https://gmail.googleapis.com/gmail/v1/users/me/messages?q=${encodeURIComponent(query)}&maxResults=50`, { headers: { Authorization: `Bearer ${accessToken}` } });
+  if (res.status === 401) { accessToken = null; sessionStorage.removeItem('wiri-gmail-token'); throw new Error('auth_expired'); }
+  if (!res.ok) throw new Error('Gmail API error: ' + res.status);
+  const data = await res.json();
+  return data.messages || [];
+}
+
+async function gmailGetMessage(id) {
+  const res = await fetch(`https://gmail.googleapis.com/gmail/v1/users/me/messages/${id}?format=metadata&metadataHeaders=From&metadataHeaders=To&metadataHeaders=Subject&metadataHeaders=Date`, { headers: { Authorization: `Bearer ${accessToken}` } });
+  if (!res.ok) return null;
+  return res.json();
+}
+
+function getHeader(msg, name) {
+  const h = msg.payload?.headers?.find(h => h.name.toLowerCase() === name.toLowerCase());
+  return h?.value || '';
+}
+
+async function runSync() {
+  if (!accessToken) { showToast('Connect Gmail first.'); return; }
+  const btn = document.getElementById('syncBtn');
+  btn.disabled = true; btn.textContent = 'Syncing...';
+  document.getElementById('loadingOverlay').classList.add('visible');
+  try {
+    let changesFound = 0;
+    document.getElementById('loadingMsg').textContent = 'Searching your Sent mail...';
+    const emailQuery = CONTACTS.map(c => `to:${c.email}`).join(' OR ');
+    const sentMessages = await gmailSearch(`in:sent (${emailQuery})`);
+    document.getElementById('loadingMsg').textContent = `Found ${sentMessages.length} sent emails — reading details...`;
+    for (const msg of sentMessages) {
+      const full = await gmailGetMessage(msg.id);
+      if (!full) continue;
+      const toHeader = getHeader(full, 'To').toLowerCase();
+      const dateStr = getHeader(full, 'Date');
+      const sentAt = dateStr ? new Date(dateStr).toISOString() : new Date(parseInt(full.internalDate)).toISOString();
+      const contact = CONTACTS.find(c => toHeader.includes(c.email.toLowerCase()));
+      if (!contact) continue;
+      const cs = state.contacts[contact.id];
+      if (!cs.sentAt) { cs.sentAt = sentAt; cs.status = 'sent'; cs.lastActivity = sentAt; addActivity('sent', `Email sent to ${contact.name}`, sentAt); changesFound++; }
+    }
+    document.getElementById('loadingMsg').textContent = 'Checking for replies...';
+    const sentContacts = CONTACTS.filter(c => state.contacts[c.id].sentAt && state.contacts[c.id].status !== 'replied');
+    for (const contact of sentContacts) {
+      const replyMsgs = await gmailSearch(`from:${contact.email} in:inbox`);
+      if (replyMsgs.length > 0) {
+        const full = await gmailGetMessage(replyMsgs[0].id);
+        if (full) {
+          const dateStr = getHeader(full, 'Date');
+          const repliedAt = dateStr ? new Date(dateStr).toISOString() : new Date(parseInt(full.internalDate)).toISOString();
+          const cs = state.contacts[contact.id];
+          if (!cs.repliedAt && new Date(repliedAt) > new Date(cs.sentAt)) {
+            cs.repliedAt = repliedAt; cs.status = 'replied'; cs.lastActivity = repliedAt;
+            addActivity('replied', `${contact.name} replied!`, repliedAt); changesFound++;
+          }
+        }
+      }
+    }
+    CONTACTS.forEach(contact => {
+      const cs = state.contacts[contact.id];
+      if (cs.status === 'sent' && cs.sentAt) {
+        const days = Math.floor((Date.now() - new Date(cs.sentAt)) / 86400000);
+        if (days >= FOLLOW_UP_DAYS) { cs.status = 'follow-up'; addActivity('followup', `Follow-up due: ${contact.name}`, new Date().toISOString()); changesFound++; }
+      }
+    });
+    state.lastSync = new Date().toISOString();
+    saveState();
+    const msg = changesFound > 0 ? `Synced ${new Date().toLocaleString()} —  ${changesFound} update${changesFound !== 1 ? 's' : ''} found.` : `Synced ${new Date().toLocaleString()} — everything up to date.`;
+    document.getElementById('syncStatus').textContent = msg;
+    document.getElementById('syncStatus').classList.add('visible');
+    document.getElementById('lastSyncLabel').textContent = `Synced ${new Date().toLocaleTimeString()}`;
+    showToast(changesFound > 0 ? `${changesFound} update${changesFound !== 1 ? 's' : ''} found` : 'All up to date');
+  } catch(err) {
+    if (err.message === 'auth_expired') {
+      accessToken = null; sessionStorage.removeItem('wiri-gmail-token');
+      document.getElementById('authStatus').textContent = '● Not connected to Gmail';
+      document.getElementById('authStatus').className = 'auth-status disconnected';
+      document.getElementById('syncBtn').disabled = true;
+      showToast('Gmail session expired — reconnect to continue.');
+    } else { console.error(err); showToast('Sync error: ' + err.message); }
+  }
+  render(); btn.disabled = false; btn.textContent = '➙ Sync';
+  document.getElementById('loadingOverlay').classList.remove('visible');
+}
+
+let currentFilter = 'all';
+function render() { renderStats(); renderTable(); renderSidebar(); }
+
+function renderStats() {
+  const cs = Object.values(state.contacts);
+  document.getElementById('statTotal').textContent = CONTACTS.length;
+  document.getElementById('statSent').textContent = cs.filter(c => ['sent','follow-up','follow-up-sent','replied'].includes(c.status)).length;
+  document.getElementById('statReplied').textContent = cs.filter(c => c.status === 'replied').length;
+  document.getElementById('statFollowUp').textContent = cs.filter(c => c.status === 'follow-up').length;
+  document.getElementById('statPending').textContent = cs.filter(c => c.status === 'not-sent').length;
+}
+
+function renderTable() {
+  const tbody = document.getElementById('contactTableBody');
+  const filtered = CONTACTS.filter(c => currentFilter === 'all' || state.contacts[c.id].status === currentFilter);
+  document.getElementById('tableCount').textContent = `${filtered.length} contact${filtered.length !== 1 ? 's' : ''}`;
+  if (!filtered.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="7">No contacts in this category.</td></tr>'; return; }
+  tbody.innerHTML = filtered.map(c => {
+    const cs = state.contacts[c.id];
+    const [scls, slbl] = { 'not-sent':['not-sent','Not Sent'], 'sent':['sent','Sent'], 'follow-up':['follow-up','Follow-Up Due'], 'follow-up-sent':['follow-up-sent','Followed Up'], 'replied':['replied','Replied ✓'] }[cs.status] || ['not-sent','Not Sent'];
+    const sentDate = cs.sentAt ? new Date(cs.sentAt).toLocaleDateString('en-US',{month:'short',day:'numeric'}) : '—';
+    const sentAgo = cs.sentAt ? (() => { const d=Math.floor((Date.now()-new Date(cs.sentAt))/86400000); return d===0?'today':d===1?'1 day ago':`${d} days ago`; })() : '';
+    const lastAct = cs.lastActivity ? new Date(cs.lastActivity).toLocaleDateString('en-US',{month:'short',day:'numeric'}) : '—';
+    return `<tr class="contact-row" onclick="cycleStatus(${c.id})">
+      <td><div class="contact-name">${c.name}</div><div class="contact-handle">${c.handle}</div></td>
+      <td class="contact-email">${c.email}</td>
+      <td><span class="priority ${c.priority}">${c.priority}</span></td>
+      <td><span class="status ${scls}"><span class="status-dot"></span>${slbl}</span></td>
+      <td><div class="date-cell">${sentDate}<div class="days-ago">${sentAgo}</div></div></td>
+      <td><div class="date-cell">${lastAct}</div></td>
+      <td class="notes-cell" onclick="event.stopPropagation()">
+        <input type="text" value="${(cs.notes||'').replace(/"/g,'&quot;')}" placeholder="Add note…" onchange="updateNote(${c.id},this.value)" />
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function renderSidebar() {
+  const due = CONTACTS.filter(c => state.contacts[c.id].status === 'follow-up');
+  document.getElementById('followUpList').innerHTML = due.length ? due.map(c => {
+    const d = state.contacts[c.id].sentAt ? Math.floor((Date.now()-new Date(state.contacts[c.id].sentAt))/86400000) : 0;
+    return `<div class="followup-item"><div><div class="followup-name">${c.name}</div><div class="followup-detail">${c.email}</div></div><span class="followup-badge">${d}d no reply</span></div>`;
+  }).join('') : '<p style="font-size:12px;color:var(--muted);font-style:italic;">No follow-ups due.</p>';
+  document.getElementById('activityFeed').innerHTML = (state.activity||[]).length ? state.activity.slice(0,8).map(a =>
+    `<div class="activity-item"><div class="activity-text"><span class="activity-icon icon-${a.type}"></span>${a.text}</div><div class="activity-time">${new Date(a.time).toLocaleDateString('en-US',{month:'short',day:'numeric'})}</div></div>`
+  ).join('') : '<p style="font-size:12px;color:var(--muted);font-style:italic;">Sync to load activity.</p>';
+  const notSent = CONTACTS.filter(c => state.contacts[c.id].status === 'not-sent');
+  document.getElementById('todoList').innerHTML = notSent.length ? notSent.slice(0,6).map(c =>
+    `<div class="followup-item"><div><div class="followup-name">${c.name}</div><div class="followup-detail" style="font-size:10px">${c.subject}</div></div><span class="priority ${c.priority}" style="font-size:9px;padding:2px 6px;flex-shrink:0">${c.priority}</span></div>`
+  ).join('') + (notSent.length > 6 ? `<p style="font-size:11px;color:var(--muted);padding-top:8px">+${notSent.length-6} more</p>` : '')
+  : '<p style="font-size:12px;color:var(--muted);font-style:italic;">All sent — great work!</p>';
+}
+
+function cycleStatus(id) {
+  const cs = state.contacts[id];
+  const order = ['not-sent','sent','follow-up','follow-up-sent','replied'];
+  const next = order[(order.indexOf(cs.status)+1) % order.length];
+  cs.status = next;
+  if (next==='sent' && !cs.sentAt) cs.sentAt = new Date().toISOString();
+  if (next==='replied' && !cs.repliedAt) cs.repliedAt = new Date().toISOString();
+  cs.lastActivity = new Date().toISOString();
+  const contact = CONTACTS.find(c => c.id===id);
+  addActivity(next==='replied'?'replied':'sent', `${contact.name} marked as ${next.replace(/-/g,' ')}`, new Date().toISOString());
+  saveState(); render();
+}
+
+function updateNote(id, value) { state.contacts[id].notes = value; saveState(); }
+function filterTable(filter, btn) {
+  currentFilter = filter;
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active'); renderTable();
+}
+function addActivity(type, text, time) {
+  if (!state.activity) state.activity = [];
+  state.activity.unshift({type,text,time});
+  if (state.activity.length > 50) state.activity = state.activity.slice(0,50);
+}
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 4000);
+}
+
+loadState();
+CONTACTS.forEach(c => {
+  const cs = state.contacts[c.id];
+  if (cs.status==='sent' && cs.sentAt && Math.floor((Date.now()-new Date(cs.sentAt))/86400000) >= FOLLOW_UP_DAYS) cs.status = 'follow-up';
+});
+saveState(); render();
+
+if (state.lastSync) document.getElementById('lastSyncLabel').textContent = `Last synced ${new Date(state.lastSync).toLocaleDateString('en-US',{month:'short',day:'numeric'})}`;
+if (!getClientId()) {
+  document.getElementById('setupBanner').classList.add('visible');
+} else {
+  window.addEventListener('load', () => setTimeout(initGoogleAuth, 800));
+}
+</script>
+</body>
+</html>
