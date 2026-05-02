@@ -23,26 +23,28 @@
   .header-left { display: flex; align-items: baseline; gap: 16px; }
   .wordmark { font-family: 'Lusitana', serif; font-size: 28px; font-weight: 700; color: var(--cream); letter-spacing: 0.08em; }
   .header-sub { font-size: 11px; font-weight: 300; color: var(--gold); letter-spacing: 0.2em; text-transform: uppercase; }
-  .header-right { display: flex; align-items: center; gap: 12px; }
-  .sync-btn { background: var(--terracotta); color: var(--cream); border: none; padding: 10px 22px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; }
-  .sync-btn:hover { background: #8B2800; }
-  .sync-btn:disabled { background: var(--muted); cursor: not-allowed; }
-  .auth-btn { background: transparent; color: var(--gold); border: 1px solid var(--gold); padding: 10px 22px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
-  .auth-btn:hover { background: var(--gold); color: var(--brown); }
-  .last-sync { font-size: 11px; color: var(--gold); letter-spacing: 0.05em; }
+  .header-right { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: flex-end; }
+  .btn { padding: 10px 22px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: all 0.2s; border: none; }
+  .btn-primary { background: var(--terracotta); color: var(--cream); }
+  .btn-primary:hover { background: #8B2800; }
+  .btn-primary:disabled { background: var(--muted); cursor: not-allowed; }
+  .btn-outline { background: transparent; color: var(--gold); border: 1px solid var(--gold); }
+  .btn-outline:hover { background: var(--gold); color: var(--brown); }
+  .btn-outline:disabled { opacity: 0.4; cursor: not-allowed; }
   .auth-status { font-size: 11px; letter-spacing: 0.05em; }
   .auth-status.connected { color: #6BAF82; }
   .auth-status.disconnected { color: var(--muted); }
+  .last-sync { font-size: 11px; color: var(--gold); letter-spacing: 0.05em; }
 
   .setup-banner { background: var(--brown); border-left: 3px solid var(--gold); margin: 28px 48px; padding: 20px 24px; display: none; }
   .setup-banner.visible { display: block; }
   .setup-banner h3 { font-family: 'Lusitana', serif; font-size: 15px; color: var(--cream); margin-bottom: 10px; }
   .setup-banner p { color: var(--gold-light); font-size: 13px; margin-bottom: 14px; line-height: 1.6; }
-  .setup-steps { list-style: none; counter-reset: steps; }
+  .setup-steps { list-style: none; counter-reset: steps; margin-bottom: 14px; }
   .setup-steps li { counter-increment: steps; color: var(--gold-light); font-size: 13px; padding: 6px 0 6px 28px; position: relative; line-height: 1.5; }
   .setup-steps li::before { content: counter(steps); position: absolute; left: 0; top: 6px; width: 18px; height: 18px; background: var(--gold); color: var(--brown); border-radius: 50%; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
   .setup-steps a { color: var(--gold); }
-  .client-id-row { display: flex; gap: 10px; align-items: center; margin-top: 14px; }
+  .client-id-row { display: flex; gap: 10px; align-items: center; }
   .client-id-input { background: rgba(255,251,243,0.08); border: 1px solid rgba(200,124,42,0.4); color: var(--cream); padding: 10px 14px; font-family: 'DM Sans', sans-serif; font-size: 13px; flex: 1; outline: none; }
   .client-id-input:focus { border-color: var(--gold); }
   .client-id-save { background: var(--gold); color: var(--brown); border: none; padding: 10px 20px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; white-space: nowrap; }
@@ -59,8 +61,9 @@
   .section-title { font-family: 'Lusitana', serif; font-size: 18px; font-weight: 700; color: var(--brown); }
   .section-count { font-size: 11px; color: var(--muted); letter-spacing: 0.1em; }
 
-  .sync-status { padding: 10px 14px; font-size: 12px; background: rgba(40,20,7,0.04); color: var(--muted); margin-bottom: 14px; border-left: 2px solid var(--gold); display: none; line-height: 1.5; }
-  .sync-status.visible { display: block; }
+  .info-bar { padding: 10px 14px; font-size: 12px; background: rgba(40,20,7,0.04); color: var(--muted); margin-bottom: 14px; border-left: 2px solid var(--gold); display: none; line-height: 1.5; }
+  .info-bar.visible { display: block; }
+  .info-bar.error { border-left-color: var(--terracotta); color: var(--terracotta); background: rgba(170,51,0,0.05); }
 
   .filter-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 8px; }
   .filter-tabs { display: flex; }
@@ -79,7 +82,7 @@
   .contact-row td { padding: 12px 12px; vertical-align: middle; }
   .contact-name { font-weight: 500; color: var(--brown); font-size: 14px; }
   .contact-handle { font-size: 11px; color: var(--muted); margin-top: 2px; }
-  .contact-email { font-size: 12px; color: var(--muted); font-weight: 300; }
+  .contact-email { font-size: 12px; color: var(--muted); font-weight: 300; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
   .cat-tag { display: inline-block; font-size: 9px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; padding: 2px 7px; border-radius: 2px; white-space: nowrap; }
   .cat-tag.food-editors { background: rgba(74,124,89,0.12); color: #4A7C59; }
@@ -100,7 +103,7 @@
   .status.follow-up .status-dot { background: var(--terracotta); animation: pulse 1.5s infinite; }
   .status.follow-up-sent { background: rgba(40,20,7,0.06); color: var(--muted); }
   .status.follow-up-sent .status-dot { background: var(--muted); }
-  @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+  @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.3} }
 
   .priority { font-size: 9px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; padding: 2px 7px; border: 1px solid; }
   .priority.top { border-color: var(--terracotta); color: var(--terracotta); }
@@ -110,7 +113,7 @@
   .date-cell { font-size: 12px; color: var(--muted); }
   .days-ago { font-size: 10px; color: var(--muted); font-weight: 300; }
 
-  .notes-cell input { border: none; background: transparent; font-family: 'DM Sans', sans-serif; font-size: 12px; color: var(--brown); width: 100%; outline: none; padding: 2px 0; cursor: text; }
+  .notes-cell input { border: none; background: transparent; font-family: 'DM Sans', sans-serif; font-size: 12px; color: var(--brown); width: 100%; outline: none; padding: 2px 0; cursor: text; min-width: 100px; }
   .notes-cell input::placeholder { color: rgba(40,20,7,0.2); }
   .notes-cell input:focus { border-bottom: 1px solid var(--gold); }
 
@@ -130,8 +133,9 @@
   .icon-sent { background: var(--gold); }
   .icon-replied { background: var(--success); }
   .icon-followup { background: var(--terracotta); }
+  .icon-new { background: #5A4080; }
 
-  .loading-overlay { display: none; position: fixed; inset: 0; background: rgba(255,251,243,0.88); z-index: 100; align-items: center; justify-content: center; flex-direction: column; gap: 16px; }
+  .loading-overlay { display: none; position: fixed; inset: 0; background: rgba(255,251,243,0.92); z-index: 100; align-items: center; justify-content: center; flex-direction: column; gap: 16px; }
   .loading-overlay.visible { display: flex; }
   .loading-text { font-family: 'Lusitana', serif; font-size: 20px; color: var(--brown); }
   .loading-sub { font-size: 13px; color: var(--muted); }
@@ -144,14 +148,16 @@
   .toast.show { opacity: 1; transform: translateY(0); }
 
   .gold-rule { height: 1px; background: linear-gradient(to right, var(--gold), transparent); margin: 0 48px; opacity: 0.4; }
+
+  .new-badge { display: inline-block; font-size: 8px; font-weight: 700; letter-spacing: 0.1em; color: #5A4080; background: rgba(100,80,140,0.12); padding: 1px 5px; border-radius: 2px; margin-left: 6px; vertical-align: middle; text-transform: uppercase; }
 </style>
 </head>
 <body>
 
 <div class="loading-overlay" id="loadingOverlay">
   <div class="spinner"></div>
-  <div class="loading-text">Syncing with Gmail</div>
-  <div class="loading-sub" id="loadingMsg">Reading your sent mail...</div>
+  <div class="loading-text" id="loadingTitle">Loading</div>
+  <div class="loading-sub" id="loadingMsg">One moment...</div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -162,35 +168,36 @@
     <span class="header-sub">Outreach CRM</span>
   </div>
   <div class="header-right">
-    <span class="auth-status disconnected" id="authStatus">● Not connected to Gmail</span>
+    <span class="auth-status disconnected" id="authStatus">● Not connected</span>
     <span class="last-sync" id="lastSyncLabel"></span>
-    <button class="auth-btn" id="authBtn" onclick="handleAuth()">Connect Gmail</button>
-    <button class="sync-btn" id="syncBtn" onclick="runSync()" disabled>↻ Sync</button>
+    <button class="btn btn-outline" id="authBtn" onclick="handleAuth()">Connect</button>
+    <button class="btn btn-outline" id="sheetBtn" onclick="syncSheet()" disabled>↓ Load Sheet</button>
+    <button class="btn btn-primary" id="gmailBtn" onclick="runGmailSync()" disabled>↻ Gmail Sync</button>
   </div>
 </div>
 
 <div class="gold-rule"></div>
 
 <div class="setup-banner" id="setupBanner">
-  <h3>One-time setup — connect Gmail in 3 steps</h3>
-  <p>This CRM reads your Gmail directly to detect sent emails and replies. You only do this once.</p>
+  <h3>One-time setup — connect Google in 3 steps</h3>
+  <p>This CRM reads contacts live from your Google Sheet and syncs status from Gmail. You only do this once.</p>
   <ol class="setup-steps">
-    <li>Go to <a href="https://console.cloud.google.com" target="_blank">console.cloud.google.com</a> → create a project → enable the <strong>Gmail API</strong></li>
-    <li>Go to <strong>APIs & Services → Credentials → Create OAuth 2.0 Client ID</strong>. Choose <em>Web application</em>. Add <code>http://localhost</code> and the URL of this file to Authorized JavaScript origins.</li>
-    <li>Copy your <strong>Client ID</strong> and paste it below, then click Save and Connect Gmail.</li>
+    <li>Go to <a href="https://console.cloud.google.com" target="_blank">console.cloud.google.com</a> → your project → ensure <strong>Gmail API</strong> and <strong>Google Sheets API</strong> are both enabled</li>
+    <li>Under <strong>Credentials → OAuth 2.0 Client ID</strong>, confirm <code>https://vandanarambaran.github.io</code> is in Authorized JavaScript origins</li>
+    <li>Paste your <strong>Client ID</strong> below and click Save & Connect</li>
   </ol>
   <div class="client-id-row">
     <input class="client-id-input" type="text" id="clientIdInput" placeholder="123456789-abc.apps.googleusercontent.com" />
-    <button class="client-id-save" onclick="saveClientId()">Save & Connect Gmail</button>
+    <button class="client-id-save" onclick="saveClientId()">Save & Connect</button>
   </div>
 </div>
 
 <div class="stats-bar">
-  <div class="stat"><span class="stat-num" id="statTotal">80</span><span class="stat-label">Total</span></div>
-  <div class="stat"><span class="stat-num" id="statSent">0</span><span class="stat-label">Sent</span></div>
-  <div class="stat"><span class="stat-num" id="statReplied">0</span><span class="stat-label">Replied</span></div>
-  <div class="stat"><span class="stat-num" id="statFollowUp">0</span><span class="stat-label">Follow-Up Due</span></div>
-  <div class="stat"><span class="stat-num" id="statPending">80</span><span class="stat-label">Not Sent</span></div>
+  <div class="stat"><span class="stat-num" id="statTotal">—</span><span class="stat-label">Total</span></div>
+  <div class="stat"><span class="stat-num" id="statSent">—</span><span class="stat-label">Sent</span></div>
+  <div class="stat"><span class="stat-num" id="statReplied">—</span><span class="stat-label">Replied</span></div>
+  <div class="stat"><span class="stat-num" id="statFollowUp">—</span><span class="stat-label">Follow-Up Due</span></div>
+  <div class="stat"><span class="stat-num" id="statPending">—</span><span class="stat-label">Not Sent</span></div>
 </div>
 
 <div class="gold-rule"></div>
@@ -199,9 +206,9 @@
   <div>
     <div class="section-header">
       <span class="section-title">Full Outreach List</span>
-      <span class="section-count" id="tableCount">80 contacts</span>
+      <span class="section-count" id="tableCount">Load sheet to begin</span>
     </div>
-    <div class="sync-status" id="syncStatus"></div>
+    <div class="info-bar" id="infoBar"></div>
     <div class="filter-row">
       <div class="filter-tabs">
         <button class="filter-tab active" onclick="filterTable('all',this)">All</button>
@@ -232,22 +239,24 @@
           <th>Notes</th>
         </tr>
       </thead>
-      <tbody id="contactTableBody"></tbody>
+      <tbody id="contactTableBody">
+        <tr class="empty-row"><td colspan="8">Connect Google and load your sheet to begin.</td></tr>
+      </tbody>
     </table>
   </div>
 
   <div class="sidebar">
     <div class="sidebar-card">
       <div class="sidebar-card-title">⚡ Follow-Ups Due</div>
-      <div id="followUpList"><p style="font-size:12px;color:var(--muted);font-style:italic;">No follow-ups due yet.</p></div>
+      <div id="followUpList"><p style="font-size:12px;color:var(--muted);font-style:italic;">Load sheet to begin.</p></div>
     </div>
     <div class="sidebar-card">
       <div class="sidebar-card-title">Recent Activity</div>
-      <div id="activityFeed"><p style="font-size:12px;color:var(--muted);font-style:italic;">Sync to load activity.</p></div>
+      <div id="activityFeed"><p style="font-size:12px;color:var(--muted);font-style:italic;">No activity yet.</p></div>
     </div>
     <div class="sidebar-card">
       <div class="sidebar-card-title">📬 Still to Send</div>
-      <div id="todoList"><p style="font-size:12px;color:var(--muted);font-style:italic;">Loading...</p></div>
+      <div id="todoList"><p style="font-size:12px;color:var(--muted);font-style:italic;">Load sheet to begin.</p></div>
     </div>
   </div>
 </div>
@@ -255,263 +264,23 @@
 <script src="https://accounts.google.com/gsi/client" async></script>
 
 <script>
-const CONTACTS = [
-  // FOOD EDITORS (20)
-  { id:1,  name:"Nikita Richardson",       handle:"@nomnomnikita",         email:"nikita.richardson@nytimes.com",      subject:"Something worth clearing a shelf for.",         priority:"top",  channel:"email", category:"food-editors" },
-  { id:2,  name:"Adina Steiman",           handle:"@adinasteiman",         email:"adina.steiman@nytimes.com",          subject:"Something worth clearing a shelf for.",         priority:"top",  channel:"email", category:"food-editors" },
-  { id:3,  name:"Eric Kim",                handle:"@ericjoonho",           email:"eric.kim@nytimes.com",               subject:"A pepper you haven't cooked with yet.",         priority:"high", channel:"email", category:"food-editors" },
-  { id:4,  name:"Priya Krishna",           handle:"@priyakrishna",         email:"priya.krishna@nytimes.com",          subject:"A diaspora pantry story.",                      priority:"high", channel:"email", category:"food-editors" },
-  { id:5,  name:"Jamila Robinson",         handle:"@jamilarobinson",       email:"jrobinson@condenast.com",            subject:"A luxury launch worth covering.",               priority:"high", channel:"email", category:"food-editors" },
-  { id:6,  name:"Rebecca Firkser",         handle:"@rebeccafirkser",       email:"rfirkser@condenast.com",             subject:"An unusual pepper for the Test Kitchen.",       priority:"med",  channel:"both",  category:"food-editors" },
-  { id:7,  name:"Zaynab Issa",             handle:"@zaynabissa",           email:"zissa@condenast.com",                subject:"Something for your shelf.",                     priority:"med",  channel:"both",  category:"food-editors" },
-  { id:8,  name:"Alan Sytsma",             handle:"@alansytsma",           email:"asytsma@nymag.com",                  subject:"A New York product worth knowing.",             priority:"top",  channel:"email", category:"food-editors" },
-  { id:9,  name:"Scarlett Lindeman",       handle:"@scarlettlindeman",     email:"slindeman@nymag.com",                subject:"An object that belongs on a beautiful table.",  priority:"high", channel:"email", category:"food-editors" },
-  { id:10, name:"Tammie Teclemariam",      handle:"@tamtecle",             email:"tammie.teclemariam@newyorker.com",   subject:"A hot sauce with a real story.",                priority:"med",  channel:"email", category:"food-editors" },
-  { id:11, name:"Emma Orlow",              handle:"@emmaorlow",            email:"hello@emmaorlow.com",                subject:"Beautiful object. Real provenance.",            priority:"high", channel:"email", category:"food-editors" },
-  { id:12, name:"Jaya Saxena",             handle:"@jayasaxena",           email:"jsaxena@eater.com",                  subject:"A DTC luxury pantry launch.",                   priority:"high", channel:"email", category:"food-editors" },
-  { id:13, name:"Bettina Makalintal",      handle:"@bmakalintal",          email:"bmakalintal@eater.com",              subject:"The hot sauce that isn't in the hot sauce aisle.", priority:"med", channel:"email", category:"food-editors" },
-  { id:14, name:"Amanda Shapiro",          handle:"@amandabshapiro",       email:"amanda@food52.com",                  subject:"Something worth clearing a shelf for.",         priority:"top",  channel:"email", category:"food-editors" },
-  { id:15, name:"Hana Asbrink",            handle:"@hanaasbrink",          email:"hana@food52.com",                    subject:"A founder-led pantry story.",                   priority:"high", channel:"email", category:"food-editors" },
-  { id:16, name:"Kat Kinsman",             handle:"@katkinsman",           email:"kkinsman@dotdashmeredith.com",        subject:"A premium condiment launch.",                   priority:"med",  channel:"email", category:"food-editors" },
-  { id:17, name:"Khushbu Shah",            handle:"@khushbushah",          email:"kshah@dotdashmeredith.com",           subject:"Cultural food story worth telling.",            priority:"med",  channel:"email", category:"food-editors" },
-  { id:18, name:"Soleil Ho",               handle:"@hooleil",              email:"soleilho@sfchronicle.com",            subject:"A rare diasporic ingredient going mainstream.", priority:"med",  channel:"email", category:"food-editors" },
-  { id:19, name:"Rachel Sugar",            handle:"@rachellsugar",         email:"rsugar@nymag.com",                   subject:"NYC product launch worth covering.",            priority:"med",  channel:"email", category:"food-editors" },
-  { id:20, name:"Tejal Rao",               handle:"@tejalrao",             email:"tejal.rao@nytimes.com",              subject:"A diaspora ingredient you haven't written about.", priority:"med", channel:"email", category:"food-editors" },
+// ─── CONFIG ───────────────────────────────────────────────────────────────────
+const SHEET_ID = '1aZSVPEDS7PUF9eoaCOuGPpkC9TEZwUIDYBcDOcsqUug';
+const FOLLOW_UP_DAYS = 8;
+const SCOPES = [
+  'https://www.googleapis.com/auth/gmail.readonly',
+  'https://www.googleapis.com/auth/spreadsheets.readonly'
+].join(' ');
 
-  // LIFESTYLE JOURNALISTS (10)
-  { id:21, name:"Emma Specter",            handle:"@emmaspecter",          email:"emma_specter@condenast.com",         subject:"Not your ordinary pantry staple.",              priority:"top",  channel:"email", category:"lifestyle" },
-  { id:22, name:"Dayna Evans",             handle:"@dayna_evans",          email:"devans@nymag.com",                   subject:"The condiment your dinner guests will ask about.", priority:"top", channel:"email", category:"lifestyle" },
-  { id:23, name:"Hannah Goldfield",        handle:"@hannahgoldfield",      email:"hgoldfield@newyorker.com",           subject:"A quietly confident condiment.",                priority:"high", channel:"email", category:"lifestyle" },
-  { id:24, name:"Rachel Tashjian",         handle:"@rchtashjian",          email:"rachel.tashjian@washpost.com",       subject:"A luxury fashion-adjacent pantry object.",      priority:"high", channel:"email", category:"lifestyle" },
-  { id:25, name:"Leah Melby Clinton",      handle:"@leahmelby",            email:"leah.clinton@wsj.com",               subject:"Premium pantry discovery for the WSJ reader.",  priority:"high", channel:"email", category:"lifestyle" },
-  { id:26, name:"Sarah Spellings",         handle:"@sarahspellings",       email:"sspellings@nymag.com",               subject:"The host gift you haven't heard of yet.",       priority:"med",  channel:"email", category:"lifestyle" },
-  { id:27, name:"Alicia Kennedy",          handle:"@aliciakennedy_",       email:"alicia@aliciakennedy.news",          subject:"A clean-ingredient diaspora pantry story.",     priority:"med",  channel:"email", category:"lifestyle" },
-  { id:28, name:"Hilary Reid",             handle:"@hilaryreid__",         email:"hreid@hearst.com",                   subject:"Elevated home dining culture.",                 priority:"med",  channel:"email", category:"lifestyle" },
-  { id:29, name:"Camille Okhio",           handle:"@camilleok",            email:"camille@camilleok.com",              subject:"A product for the table as much as the pantry.", priority:"med", channel:"email", category:"lifestyle" },
-  { id:30, name:"Julia Rubin",             handle:"@julesnrubin",          email:"jrubin@vox.com",                     subject:"Why is hot sauce having a luxury moment?",      priority:"med",  channel:"email", category:"lifestyle" },
-
-  // CREATORS (15)
-  { id:31, name:"Toni Bravo",              handle:"@bonitravo",            email:"alix@thedigitalbrandarchitects.com", subject:"Something for your shelf.",                     priority:"top",  channel:"both",  category:"creators" },
-  { id:32, name:"Alison Roman",            handle:"@alisoneroman",         email:"contact@alisoneroman.com",           subject:"A bottle worth finding counter space for.",     priority:"top",  channel:"email", category:"creators" },
-  { id:33, name:"Hetty McKinnon",          handle:"@hettymckinnon",        email:"hetty@hettymckinnon.com",            subject:"A pepper you might not have met yet.",          priority:"high", channel:"email", category:"creators" },
-  { id:34, name:"Carla Lalli Music",       handle:"@carlalallimusic",      email:"carla@carlalallimusic.com",          subject:"For your counter, not your cabinet.",           priority:"high", channel:"email", category:"creators" },
-  { id:35, name:"Jerrelle Guy",            handle:"@chocolateforbasil",    email:"hello@jerrelleguystudio.com",        subject:"Something I think you'd feel.",                 priority:"top",  channel:"both",  category:"creators" },
-  { id:36, name:"Kia Damon",              handle:"@kiaadamon",            email:"kia@kiadamon.com",                   subject:"A pepper your community knows.",                priority:"top",  channel:"both",  category:"creators" },
-  { id:37, name:"Zaynab Issa (Creator)",   handle:"@zaynabissa",           email:"zaynabissa@gmail.com",               subject:"A bottle for your shelf.",                      priority:"high", channel:"both",  category:"creators" },
-  { id:38, name:"Maya-Camille Broussard",  handle:"@justice_of_the_pies",  email:"info@justiceofthepies.com",          subject:"A pepper with a story.",                        priority:"med",  channel:"both",  category:"creators" },
-  { id:39, name:"Carolina Gelen",          handle:"@carolinagelen",        email:"carolina@carolinagelen.com",         subject:"A pantry discovery worth making.",              priority:"high", channel:"email", category:"creators" },
-  { id:40, name:"Rick Martinez",           handle:"@rick_andrew_martinez", email:"rick@rickmartinez.com",              subject:"A chili with a real story.",                    priority:"med",  channel:"email", category:"creators" },
-  { id:41, name:"Andy Baraghani",          handle:"@andybaraghani",        email:"andy@andybaraghani.com",             subject:"A bottle that earns its counter space.",        priority:"high", channel:"email", category:"creators" },
-  { id:42, name:"Sohla El-Waylly",         handle:"@sohlaelwaylly",        email:"sohla@sohlaelwaylly.com",            subject:"A pepper worth getting curious about.",         priority:"med",  channel:"email", category:"creators" },
-  { id:43, name:"Julia Turshen",           handle:"@turshen",              email:"julia@turshen.com",                  subject:"Something for your table.",                     priority:"med",  channel:"email", category:"creators" },
-  { id:44, name:"Aaron Crowder",           handle:"@thefoodlord",          email:"thefoodlord@gmail.com",              subject:"A New York hot sauce you haven't heard of yet.", priority:"med", channel:"both",  category:"creators" },
-  { id:45, name:"Hawa Hassan",             handle:"@hawabana",             email:"hawa@basicsauce.com",                subject:"One founder to another.",                       priority:"top",  channel:"email", category:"creators" },
-
-  // LUXURY LIFESTYLE (20)
-  { id:46, name:"Meredith Hayden",         handle:"@wishbonekitchen",      email:"contact@wishbonekitchen.com",        subject:"Our taglines might be the same.",               priority:"top",  channel:"email", category:"luxury" },
-  { id:47, name:"Laila Gohar",             handle:"@lailacooks",           email:"hello@lailagohar.com",               subject:"An object with presence.",                      priority:"top",  channel:"email", category:"luxury" },
-  { id:48, name:"Athena Calderone",        handle:"@eyeswoon",             email:"hello@eyeswoon.com",                 subject:"For your table, not your pantry.",              priority:"top",  channel:"email", category:"luxury" },
-  { id:49, name:"Camille Styles",          handle:"@camillestyles",        email:"camille@camillestyles.com",          subject:"The bottle guests always ask about.",           priority:"high", channel:"email", category:"luxury" },
-  { id:50, name:"Ina Garten",              handle:"@inagarten",            email:"Via Clarkson Potter PR",             subject:"Something for a beautiful table.",              priority:"med",  channel:"email", category:"luxury" },
-  { id:51, name:"Chrissy Teigen",          handle:"@chrissyteigen",        email:"cravingsbychrissy@gmail.com",        subject:"A hot sauce your table is missing.",            priority:"med",  channel:"both",  category:"luxury" },
-  { id:52, name:"Architectural Digest",    handle:"@archdigest",           email:"editors@architecturaldigest.com",    subject:"The condiment worth designing your kitchen around.", priority:"top", channel:"email", category:"luxury" },
-  { id:53, name:"Town & Country",          handle:"@townandcountrymag",    email:"editors@townandcountrymag.com",      subject:"A host gift worth giving.",                     priority:"top",  channel:"email", category:"luxury" },
-  { id:54, name:"WSJ Magazine",            handle:"@wsjmag",               email:"wsjmagazine@wsj.com",                subject:"A pantry discovery for the affluent home cook.", priority:"high", channel:"email", category:"luxury" },
-  { id:55, name:"Financial Times HTSI",    handle:"@ft_htsi",              email:"htsi@ft.com",                        subject:"A drop of luxury.",                             priority:"high", channel:"email", category:"luxury" },
-  { id:56, name:"Domino Magazine",         handle:"@dominomag",            email:"press@domino.com",                   subject:"A kitchen object worth owning.",                priority:"med",  channel:"email", category:"luxury" },
-  { id:57, name:"Bloomberg Pursuits",      handle:"@bloomberg",            email:"pursuits@bloomberg.com",             subject:"The hot sauce hedge fund managers are putting on their oysters.", priority:"high", channel:"email", category:"luxury" },
-  { id:58, name:"Victoria James",          handle:"@victoriajamessomm",    email:"victoria@victoriajamessomm.com",     subject:"A pairing worth knowing.",                      priority:"high", channel:"email", category:"luxury" },
-  { id:59, name:"André Hueston Mack",      handle:"@andrehueston",         email:"andre@moutonnoirwines.com",          subject:"WIRI + natural wine is a pairing.",             priority:"med",  channel:"both",  category:"luxury" },
-  { id:60, name:"Corkbuzz (Laura Maniec)", handle:"@corkbuzz",             email:"info@corkbuzz.com",                  subject:"A table condiment for your restaurants.",       priority:"med",  channel:"email", category:"luxury" },
-  { id:61, name:"Derek Blasberg",          handle:"@derekblasberg",        email:"Via IG DM",                          subject:"For your next dinner.",                         priority:"med",  channel:"both",  category:"luxury" },
-  { id:62, name:"Jake Codispoti",          handle:"@jakezoom",             email:"jake@somewheremanagement.com",       subject:"A bottle that photographs beautifully.",        priority:"high", channel:"both",  category:"luxury" },
-  { id:63, name:"Sam Way",                 handle:"@samwaycooks",          email:"sam@samwaycooks.com",                subject:"A drop of luxury on a beautiful plate.",        priority:"high", channel:"email", category:"luxury" },
-  { id:64, name:"Hannah Hart",             handle:"@mydrunkkitchen",       email:"hannah@hannahhart.com",              subject:"The hot sauce I'm obsessed with.",              priority:"med",  channel:"email", category:"luxury" },
-  { id:65, name:"Justine Doiron",          handle:"@justine_snacks",       email:"justine@justinesnacks.com",          subject:"Clean, elevated, editorial.",                   priority:"high", channel:"email", category:"luxury" },
-
-  // NYC RETAIL PARTNERS (15)
-  { id:66, name:"Meadow Lane",             handle:"@meadowlane_nyc",       email:"info@meadowlanenyc.com",             subject:"WIRI should be your hot sauce.",                priority:"top",  channel:"email", category:"retail" },
-  { id:67, name:"Pop Up Grocer",           handle:"@popup.grocer",         email:"hello@popupgrocer.com",              subject:"A new brand worth carrying.",                   priority:"top",  channel:"email", category:"retail" },
-  { id:68, name:"Big Night",               handle:"@bignightshop",         email:"hello@bignight.com",                 subject:"Beautifully packaged. Made in New York.",       priority:"top",  channel:"email", category:"retail" },
-  { id:69, name:"Eataly NYC",              handle:"@eataly",               email:"vendors@eataly.com",                 subject:"A luxury condiment for your shelves.",          priority:"high", channel:"email", category:"retail" },
-  { id:70, name:"Sahadi's",               handle:"@sahadisbrooklyn",      email:"info@sahadis.com",                   subject:"A rare Guyanese pepper made in New York.",      priority:"high", channel:"email", category:"retail" },
-  { id:71, name:"Whole Foods Market NYC",  handle:"@wholefoods",           email:"localnyc@wholefoods.com",            subject:"NYC-made. Clean ingredients. Local program.",   priority:"high", channel:"email", category:"retail" },
-  { id:72, name:"Kalustyans",              handle:"@kalustyans",           email:"(212) 685-3451",                     subject:"A rare chili that belongs on your shelves.",    priority:"high", channel:"email", category:"retail" },
-  { id:73, name:"Happier Grocery",         handle:"@happiergrocery",       email:"hello@happiergrocery.com",           subject:"Beautiful packaging. Better pantry.",           priority:"med",  channel:"email", category:"retail" },
-  { id:74, name:"Butterfield Market",      handle:"@butterfieldmarket",    email:"(212) 288-7800",                     subject:"A gift-worthy pantry discovery.",               priority:"med",  channel:"email", category:"retail" },
-  { id:75, name:"Foragers Market",         handle:"@foragersnyc",          email:"info@foragersmarket.com",            subject:"NY-made. Clean. Worth carrying.",               priority:"med",  channel:"email", category:"retail" },
-  { id:76, name:"Westside Market",         handle:"@westsidemarketnyc",    email:"info@westsidemarketnyc.com",         subject:"A premium condiment for your shelves.",         priority:"med",  channel:"email", category:"retail" },
-  { id:77, name:"Murray's Cheese",         handle:"@murrayscheese",        email:"vendors@murrayscheese.com",          subject:"WIRI on a charcuterie board is obvious.",       priority:"high", channel:"email", category:"retail" },
-  { id:78, name:"The Anchor",              handle:"@theanchorbk",          email:"info@theanchorbk.com",               subject:"Natural wine. WIRI. Perfect together.",         priority:"med",  channel:"both",  category:"retail" },
-  { id:79, name:"Maman",                   handle:"@maman_nyc",            email:"hello@mamannyc.com",                 subject:"A gifting item for your retail section.",       priority:"med",  channel:"email", category:"retail" },
-  { id:80, name:"Bedford Cheese Shop",     handle:"@bedfordcheeseshop",    email:"info@bedfordcheeseshop.com",         subject:"WIRI belongs next to aged cheddar.",            priority:"med",  channel:"email", category:"retail" },
+const TABS = [
+  { name: 'Food Editors',               category: 'food-editors' },
+  { name: 'Lifestyle Journalists',      category: 'lifestyle'    },
+  { name: 'Creators',                   category: 'creators'     },
+  { name: 'Luxury Lifestyle Expansion', category: 'luxury'       },
+  { name: 'NYC Retail Partners',        category: 'retail'       },
 ];
 
-const FOLLOW_UP_DAYS = 8;
-const GMAIL_SCOPE = 'https://www.googleapis.com/auth/gmail.readonly';
-
-let state = { contacts: {}, activity: [], lastSync: null };
-let accessToken = null;
-let tokenClient = null;
-let currentFilter = 'all';
-let currentCategory = 'all';
-
-function loadState() {
-  try {
-    const saved = localStorage.getItem('wiri-crm-v4');
-    if (saved) state = JSON.parse(saved);
-  } catch(e) {}
-  CONTACTS.forEach(c => {
-    if (!state.contacts[c.id]) {
-      state.contacts[c.id] = { status:'not-sent', sentAt:null, repliedAt:null, notes:'', lastActivity:null };
-    }
-  });
-  const savedToken = sessionStorage.getItem('wiri-gmail-token');
-  if (savedToken) { accessToken = savedToken; setAuthConnected(); }
-}
-
-function saveState() { localStorage.setItem('wiri-crm-v4', JSON.stringify(state)); }
-function getClientId() { return localStorage.getItem('wiri-client-id') || ''; }
-
-function saveClientId() {
-  const id = document.getElementById('clientIdInput').value.trim();
-  if (!id.includes('.apps.googleusercontent.com')) { showToast('Invalid Client ID format'); return; }
-  localStorage.setItem('wiri-client-id', id);
-  document.getElementById('setupBanner').classList.remove('visible');
-  showToast('Client ID saved. Click Connect Gmail.');
-  initGoogleAuth();
-}
-
-function initGoogleAuth() {
-  const clientId = getClientId();
-  if (!clientId) return;
-  if (typeof google === 'undefined') { setTimeout(initGoogleAuth, 500); return; }
-  tokenClient = google.accounts.oauth2.initTokenClient({
-    client_id: clientId,
-    scope: GMAIL_SCOPE,
-    callback: (response) => {
-      if (response.error) { showToast('Auth error: ' + response.error); return; }
-      accessToken = response.access_token;
-      sessionStorage.setItem('wiri-gmail-token', accessToken);
-      setAuthConnected();
-      showToast('Gmail connected! Hit Sync to scan your mail.');
-    },
-  });
-}
-
-function handleAuth() {
-  if (!getClientId()) { document.getElementById('setupBanner').classList.add('visible'); return; }
-  if (!tokenClient) {
-    initGoogleAuth();
-    setTimeout(() => { if (tokenClient) tokenClient.requestAccessToken(); else showToast('Google auth not loaded yet - try again.'); }, 600);
-    return;
-  }
-  tokenClient.requestAccessToken();
-}
-
-function setAuthConnected() {
-  document.getElementById('authStatus').textContent = '● Gmail connected';
-  document.getElementById('authStatus').className = 'auth-status connected';
-  document.getElementById('authBtn').textContent = 'Reconnect';
-  document.getElementById('syncBtn').disabled = false;
-}
-
-async function gmailSearch(query) {
-  const res = await fetch(`https://gmail.googleapis.com/gmail/v1/users/me/messages?q=${encodeURIComponent(query)}&maxResults=100`, { headers: { Authorization: `Bearer ${accessToken}` } });
-  if (res.status === 401) { accessToken = null; sessionStorage.removeItem('wiri-gmail-token'); throw new Error('auth_expired'); }
-  if (!res.ok) throw new Error('Gmail API error: ' + res.status);
-  const data = await res.json();
-  return data.messages || [];
-}
-
-async function gmailGetMessage(id) {
-  const res = await fetch(`https://gmail.googleapis.com/gmail/v1/users/me/messages/${id}?format=metadata&metadataHeaders=From&metadataHeaders=To&metadataHeaders=Subject&metadataHeaders=Date`, { headers: { Authorization: `Bearer ${accessToken}` } });
-  if (!res.ok) return null;
-  return res.json();
-}
-
-function getHeader(msg, name) {
-  const h = msg.payload?.headers?.find(h => h.name.toLowerCase() === name.toLowerCase());
-  return h?.value || '';
-}
-
-async function runSync() {
-  if (!accessToken) { showToast('Connect Gmail first.'); return; }
-  const btn = document.getElementById('syncBtn');
-  btn.disabled = true; btn.textContent = 'Syncing...';
-  document.getElementById('loadingOverlay').classList.add('visible');
-  try {
-    let changesFound = 0;
-    const validContacts = CONTACTS.filter(c => c.email.includes('@'));
-    document.getElementById('loadingMsg').textContent = 'Searching your Sent mail...';
-    const emailQuery = validContacts.map(c => `to:${c.email}`).join(' OR ');
-    const sentMessages = await gmailSearch(`in:sent (${emailQuery})`);
-    document.getElementById('loadingMsg').textContent = `Found ${sentMessages.length} sent emails — reading details...`;
-    for (const msg of sentMessages) {
-      const full = await gmailGetMessage(msg.id);
-      if (!full) continue;
-      const toHeader = getHeader(full, 'To').toLowerCase();
-      const dateStr = getHeader(full, 'Date');
-      const sentAt = dateStr ? new Date(dateStr).toISOString() : new Date(parseInt(full.internalDate)).toISOString();
-      const contact = validContacts.find(c => toHeader.includes(c.email.toLowerCase()));
-      if (!contact) continue;
-      const cs = state.contacts[contact.id];
-      if (!cs.sentAt) { cs.sentAt = sentAt; cs.status = 'sent'; cs.lastActivity = sentAt; addActivity('sent', `Email sent to ${contact.name}`, sentAt); changesFound++; }
-    }
-    document.getElementById('loadingMsg').textContent = 'Checking for replies...';
-    const sentContacts = validContacts.filter(c => state.contacts[c.id].sentAt && state.contacts[c.id].status !== 'replied');
-    for (const contact of sentContacts) {
-      const replyMsgs = await gmailSearch(`from:${contact.email} in:inbox`);
-      if (replyMsgs.length > 0) {
-        const full = await gmailGetMessage(replyMsgs[0].id);
-        if (full) {
-          const dateStr = getHeader(full, 'Date');
-          const repliedAt = dateStr ? new Date(dateStr).toISOString() : new Date(parseInt(full.internalDate)).toISOString();
-          const cs = state.contacts[contact.id];
-          if (!cs.repliedAt && new Date(repliedAt) > new Date(cs.sentAt)) {
-            cs.repliedAt = repliedAt; cs.status = 'replied'; cs.lastActivity = repliedAt;
-            addActivity('replied', `${contact.name} replied!`, repliedAt); changesFound++;
-          }
-        }
-      }
-    }
-    CONTACTS.forEach(contact => {
-      const cs = state.contacts[contact.id];
-      if (cs.status === 'sent' && cs.sentAt) {
-        const days = Math.floor((Date.now() - new Date(cs.sentAt)) / 86400000);
-        if (days >= FOLLOW_UP_DAYS) { cs.status = 'follow-up'; addActivity('followup', `Follow-up due: ${contact.name}`, new Date().toISOString()); changesFound++; }
-      }
-    });
-    state.lastSync = new Date().toISOString();
-    saveState();
-    const msg = changesFound > 0 ? `Synced ${new Date().toLocaleString()} — ${changesFound} update${changesFound !== 1 ? 's' : ''} found.` : `Synced ${new Date().toLocaleString()} — everything up to date.`;
-    document.getElementById('syncStatus').textContent = msg;
-    document.getElementById('syncStatus').classList.add('visible');
-    document.getElementById('lastSyncLabel').textContent = `Synced ${new Date().toLocaleTimeString()}`;
-    showToast(changesFound > 0 ? `${changesFound} update${changesFound !== 1 ? 's' : ''} found` : 'All up to date');
-  } catch(err) {
-    if (err.message === 'auth_expired') {
-      accessToken = null; sessionStorage.removeItem('wiri-gmail-token');
-      document.getElementById('authStatus').textContent = '● Not connected to Gmail';
-      document.getElementById('authStatus').className = 'auth-status disconnected';
-      document.getElementById('syncBtn').disabled = true;
-      showToast('Gmail session expired — reconnect to continue.');
-    } else { console.error(err); showToast('Sync error: ' + err.message); }
-  }
-  render(); btn.disabled = false; btn.textContent = '↻ Sync';
-  document.getElementById('loadingOverlay').classList.remove('visible');
-}
-
-function render() { renderStats(); renderTable(); renderSidebar(); }
-
-function renderStats() {
-  const cs = Object.values(state.contacts);
-  document.getElementById('statTotal').textContent = CONTACTS.length;
-  document.getElementById('statSent').textContent = cs.filter(c => ['sent','follow-up','follow-up-sent','replied'].includes(c.status)).length;
-  document.getElementById('statReplied').textContent = cs.filter(c => c.status === 'replied').length;
-  document.getElementById('statFollowUp').textContent = cs.filter(c => c.status === 'follow-up').length;
-  document.getElementById('statPending').textContent = cs.filter(c => c.status === 'not-sent').length;
-}
+const COL = { num: 0, name: 1, pub: 2, role: 3, email: 4, handle: 5, pitch: 6, priority: 7, notes: 8 };
 
 const CAT_LABELS = {
   'food-editors': 'Food Editor',
@@ -521,54 +290,374 @@ const CAT_LABELS = {
   'retail': 'Retail'
 };
 
+// ─── STATE ────────────────────────────────────────────────────────────────────
+let CONTACTS = [];
+let state = { contacts: {}, activity: [], lastSync: null, lastSheetLoad: null };
+let accessToken = null;
+let tokenClient = null;
+let currentFilter = 'all';
+let currentCategory = 'all';
+
+// ─── PERSISTENCE ──────────────────────────────────────────────────────────────
+function loadState() {
+  try {
+    const saved = localStorage.getItem('wiri-crm-v5');
+    if (saved) state = { ...state, ...JSON.parse(saved) };
+  } catch(e) {}
+  const savedToken = sessionStorage.getItem('wiri-gmail-token');
+  if (savedToken) { accessToken = savedToken; setAuthConnected(); }
+  try {
+    const cached = localStorage.getItem('wiri-contacts-cache');
+    if (cached) {
+      CONTACTS = JSON.parse(cached);
+      ensureContactState();
+      render();
+      showInfo(`${CONTACTS.length} contacts loaded from cache. Hit "Load Sheet" to refresh.`);
+    }
+  } catch(e) {}
+}
+
+function saveState() { localStorage.setItem('wiri-crm-v5', JSON.stringify(state)); }
+function cacheContacts() { localStorage.setItem('wiri-contacts-cache', JSON.stringify(CONTACTS)); }
+
+function ensureContactState() {
+  CONTACTS.forEach(c => {
+    if (!state.contacts[c.id]) {
+      state.contacts[c.id] = { status: 'not-sent', sentAt: null, repliedAt: null, notes: '', lastActivity: null };
+    }
+  });
+}
+
+// ─── AUTH ─────────────────────────────────────────────────────────────────────
+function getClientId() { return localStorage.getItem('wiri-client-id') || ''; }
+
+function saveClientId() {
+  const id = document.getElementById('clientIdInput').value.trim();
+  if (!id.includes('.apps.googleusercontent.com')) { showToast('Invalid Client ID format'); return; }
+  localStorage.setItem('wiri-client-id', id);
+  document.getElementById('setupBanner').classList.remove('visible');
+  initGoogleAuth();
+}
+
+function initGoogleAuth() {
+  const clientId = getClientId();
+  if (!clientId) return;
+  if (typeof google === 'undefined') { setTimeout(initGoogleAuth, 500); return; }
+  tokenClient = google.accounts.oauth2.initTokenClient({
+    client_id: clientId,
+    scope: SCOPES,
+    callback: (response) => {
+      if (response.error) { showToast('Auth error: ' + response.error); return; }
+      accessToken = response.access_token;
+      sessionStorage.setItem('wiri-gmail-token', accessToken);
+      setAuthConnected();
+      showToast('Connected! Hit "Load Sheet" to pull your contacts.');
+    },
+  });
+}
+
+function handleAuth() {
+  if (!getClientId()) { document.getElementById('setupBanner').classList.add('visible'); return; }
+  if (!tokenClient) {
+    initGoogleAuth();
+    setTimeout(() => { if (tokenClient) tokenClient.requestAccessToken(); else showToast('Auth not loaded yet — try again.'); }, 600);
+    return;
+  }
+  tokenClient.requestAccessToken();
+}
+
+function setAuthConnected() {
+  document.getElementById('authStatus').textContent = '● Connected';
+  document.getElementById('authStatus').className = 'auth-status connected';
+  document.getElementById('authBtn').textContent = 'Reconnect';
+  document.getElementById('sheetBtn').disabled = false;
+  document.getElementById('gmailBtn').disabled = false;
+}
+
+// ─── SHEETS FETCH ─────────────────────────────────────────────────────────────
+async function fetchTab(tabName) {
+  const range = encodeURIComponent(`'${tabName}'!A:I`);
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${range}`;
+  const res = await fetch(url, { headers: { Authorization: `Bearer ${accessToken}` } });
+  if (res.status === 401) { accessToken = null; sessionStorage.removeItem('wiri-gmail-token'); throw new Error('auth_expired'); }
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(`Sheets error on tab "${tabName}": ${err?.error?.message || res.status}`);
+  }
+  const data = await res.json();
+  return data.values || [];
+}
+
+function parsePriority(raw) {
+  if (!raw) return 'med';
+  const r = raw.toLowerCase();
+  if (r.includes('top')) return 'top';
+  if (r.includes('high')) return 'high';
+  return 'med';
+}
+
+function makeId(name, email) {
+  return (name + '|' + email).toLowerCase().replace(/\s+/g, '_');
+}
+
+async function syncSheet() {
+  if (!accessToken) { showToast('Connect Google first.'); return; }
+  showLoading('Loading Sheet', 'Fetching contacts from your Google Sheet...');
+  try {
+    const newContacts = [];
+    for (const tab of TABS) {
+      document.getElementById('loadingMsg').textContent = `Reading "${tab.name}"...`;
+      const rows = await fetchTab(tab.name);
+      const dataRows = rows.slice(2); // skip title row + header row
+      for (const row of dataRows) {
+        const name = (row[COL.name] || '').trim();
+        const email = (row[COL.email] || '').trim();
+        if (!name || name === 'Name') continue;
+        newContacts.push({
+          id: makeId(name, email),
+          name,
+          email,
+          handle: (row[COL.handle] || '').trim(),
+          pub: (row[COL.pub] || '').trim(),
+          subject: (row[COL.pitch] || '').trim().substring(0, 80),
+          priority: parsePriority(row[COL.priority] || ''),
+          category: tab.category,
+          channel: 'email',
+        });
+      }
+    }
+
+    const existingIds = new Set(CONTACTS.map(c => c.id));
+    const newlyAdded = newContacts.filter(c => !existingIds.has(c.id));
+
+    CONTACTS = newContacts;
+    ensureContactState();
+    cacheContacts();
+    state.lastSheetLoad = new Date().toISOString();
+    saveState();
+
+    if (newlyAdded.length > 0) {
+      newlyAdded.forEach(c => addActivity('new', `New contact added: ${c.name}`, new Date().toISOString()));
+      showToast(`Sheet loaded — ${CONTACTS.length} contacts, ${newlyAdded.length} new`);
+    } else {
+      showToast(`Sheet loaded — ${CONTACTS.length} contacts`);
+    }
+
+    showInfo(`Sheet last loaded ${new Date().toLocaleString()}. ${CONTACTS.length} contacts across 5 categories.`);
+    document.getElementById('lastSyncLabel').textContent = `Sheet: ${new Date().toLocaleTimeString()}`;
+    render();
+  } catch(err) {
+    hideLoading();
+    if (err.message === 'auth_expired') {
+      handleAuthExpired();
+    } else {
+      showInfo(err.message, true);
+      showToast('Sheet load failed — see error above');
+      console.error(err);
+    }
+    return;
+  }
+  hideLoading();
+}
+
+// ─── GMAIL SYNC ───────────────────────────────────────────────────────────────
+async function gmailSearch(query) {
+  const res = await fetch(
+    `https://gmail.googleapis.com/gmail/v1/users/me/messages?q=${encodeURIComponent(query)}&maxResults=100`,
+    { headers: { Authorization: `Bearer ${accessToken}` } }
+  );
+  if (res.status === 401) throw new Error('auth_expired');
+  if (!res.ok) throw new Error('Gmail API error: ' + res.status);
+  const data = await res.json();
+  return data.messages || [];
+}
+
+async function gmailGetMessage(id) {
+  const res = await fetch(
+    `https://gmail.googleapis.com/gmail/v1/users/me/messages/${id}?format=metadata&metadataHeaders=From&metadataHeaders=To&metadataHeaders=Subject&metadataHeaders=Date`,
+    { headers: { Authorization: `Bearer ${accessToken}` } }
+  );
+  if (!res.ok) return null;
+  return res.json();
+}
+
+function getHeader(msg, name) {
+  const h = msg.payload?.headers?.find(h => h.name.toLowerCase() === name.toLowerCase());
+  return h?.value || '';
+}
+
+async function runGmailSync() {
+  if (!accessToken) { showToast('Connect Google first.'); return; }
+  if (CONTACTS.length === 0) { showToast('Load the sheet first.'); return; }
+  showLoading('Gmail Sync', 'Searching your Sent mail...');
+  const btn = document.getElementById('gmailBtn');
+  btn.disabled = true;
+  try {
+    let changesFound = 0;
+    const validContacts = CONTACTS.filter(c => c.email.includes('@'));
+    const emailQuery = validContacts.map(c => `to:${c.email}`).join(' OR ');
+    const sentMessages = await gmailSearch(`in:sent (${emailQuery})`);
+    document.getElementById('loadingMsg').textContent = `Found ${sentMessages.length} sent emails — reading...`;
+
+    for (const msg of sentMessages) {
+      const full = await gmailGetMessage(msg.id);
+      if (!full) continue;
+      const toHeader = getHeader(full, 'To').toLowerCase();
+      const dateStr = getHeader(full, 'Date');
+      const sentAt = dateStr ? new Date(dateStr).toISOString() : new Date(parseInt(full.internalDate)).toISOString();
+      const contact = validContacts.find(c => toHeader.includes(c.email.toLowerCase()));
+      if (!contact) continue;
+      const cs = state.contacts[contact.id];
+      if (cs && !cs.sentAt) {
+        cs.sentAt = sentAt; cs.status = 'sent'; cs.lastActivity = sentAt;
+        addActivity('sent', `Email sent to ${contact.name}`, sentAt);
+        changesFound++;
+      }
+    }
+
+    document.getElementById('loadingMsg').textContent = 'Checking for replies...';
+    const sentContacts = validContacts.filter(c => state.contacts[c.id]?.sentAt && state.contacts[c.id]?.status !== 'replied');
+    for (const contact of sentContacts) {
+      const replyMsgs = await gmailSearch(`from:${contact.email} in:inbox`);
+      if (replyMsgs.length > 0) {
+        const full = await gmailGetMessage(replyMsgs[0].id);
+        if (full) {
+          const dateStr = getHeader(full, 'Date');
+          const repliedAt = dateStr ? new Date(dateStr).toISOString() : new Date(parseInt(full.internalDate)).toISOString();
+          const cs = state.contacts[contact.id];
+          if (cs && !cs.repliedAt && new Date(repliedAt) > new Date(cs.sentAt)) {
+            cs.repliedAt = repliedAt; cs.status = 'replied'; cs.lastActivity = repliedAt;
+            addActivity('replied', `${contact.name} replied!`, repliedAt);
+            changesFound++;
+          }
+        }
+      }
+    }
+
+    CONTACTS.forEach(c => {
+      const cs = state.contacts[c.id];
+      if (cs?.status === 'sent' && cs.sentAt) {
+        const days = Math.floor((Date.now() - new Date(cs.sentAt)) / 86400000);
+        if (days >= FOLLOW_UP_DAYS) {
+          cs.status = 'follow-up';
+          addActivity('followup', `Follow-up due: ${c.name}`, new Date().toISOString());
+          changesFound++;
+        }
+      }
+    });
+
+    state.lastSync = new Date().toISOString();
+    saveState();
+    document.getElementById('lastSyncLabel').textContent = `Gmail: ${new Date().toLocaleTimeString()}`;
+    showInfo(`Gmail synced ${new Date().toLocaleString()} — ${changesFound > 0 ? changesFound + ' update(s) found' : 'all up to date'}.`);
+    showToast(changesFound > 0 ? `${changesFound} update(s) found` : 'All up to date');
+    render();
+  } catch(err) {
+    if (err.message === 'auth_expired') { handleAuthExpired(); }
+    else { showToast('Gmail sync error: ' + err.message); console.error(err); }
+  }
+  hideLoading();
+  btn.disabled = false;
+}
+
+function handleAuthExpired() {
+  accessToken = null;
+  sessionStorage.removeItem('wiri-gmail-token');
+  document.getElementById('authStatus').textContent = '● Session expired';
+  document.getElementById('authStatus').className = 'auth-status disconnected';
+  document.getElementById('sheetBtn').disabled = true;
+  document.getElementById('gmailBtn').disabled = true;
+  showToast('Session expired — click Connect to re-authenticate.');
+}
+
+// ─── RENDER ───────────────────────────────────────────────────────────────────
+function render() { renderStats(); renderTable(); renderSidebar(); }
+
+function renderStats() {
+  const cs = Object.values(state.contacts);
+  const total = CONTACTS.length;
+  document.getElementById('statTotal').textContent = total || '—';
+  document.getElementById('statSent').textContent = cs.filter(c => ['sent','follow-up','follow-up-sent','replied'].includes(c.status)).length || (total ? 0 : '—');
+  document.getElementById('statReplied').textContent = cs.filter(c => c.status === 'replied').length || (total ? 0 : '—');
+  document.getElementById('statFollowUp').textContent = cs.filter(c => c.status === 'follow-up').length || (total ? 0 : '—');
+  document.getElementById('statPending').textContent = cs.filter(c => c.status === 'not-sent').length || (total ? 0 : '—');
+}
+
 function renderTable() {
   const tbody = document.getElementById('contactTableBody');
+  if (CONTACTS.length === 0) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="8">Connect Google and click "Load Sheet" to pull your contacts.</td></tr>';
+    document.getElementById('tableCount').textContent = 'No contacts loaded';
+    return;
+  }
   let filtered = CONTACTS.filter(c => {
-    const statusMatch = currentFilter === 'all' || state.contacts[c.id].status === currentFilter;
+    const statusMatch = currentFilter === 'all' || (state.contacts[c.id]?.status || 'not-sent') === currentFilter;
     const catMatch = currentCategory === 'all' || c.category === currentCategory;
     return statusMatch && catMatch;
   });
   document.getElementById('tableCount').textContent = `${filtered.length} contact${filtered.length !== 1 ? 's' : ''}`;
-  if (!filtered.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="8">No contacts in this category.</td></tr>'; return; }
+  if (!filtered.length) {
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="8">No contacts match this filter.</td></tr>';
+    return;
+  }
   tbody.innerHTML = filtered.map(c => {
-    const cs = state.contacts[c.id];
-    const [scls, slbl] = { 'not-sent':['not-sent','Not Sent'], 'sent':['sent','Sent'], 'follow-up':['follow-up','Follow-Up Due'], 'follow-up-sent':['follow-up-sent','Followed Up'], 'replied':['replied','Replied ✓'] }[cs.status] || ['not-sent','Not Sent'];
+    const cs = state.contacts[c.id] || { status: 'not-sent', sentAt: null, lastActivity: null, notes: '' };
+    const status = cs.status || 'not-sent';
+    const statusMap = {
+      'not-sent': ['not-sent','Not Sent'],
+      'sent': ['sent','Sent'],
+      'follow-up': ['follow-up','Follow-Up Due'],
+      'follow-up-sent': ['follow-up-sent','Followed Up'],
+      'replied': ['replied','Replied ✓']
+    };
+    const [scls, slbl] = statusMap[status] || ['not-sent','Not Sent'];
     const sentDate = cs.sentAt ? new Date(cs.sentAt).toLocaleDateString('en-US',{month:'short',day:'numeric'}) : '—';
-    const sentAgo = cs.sentAt ? (() => { const d=Math.floor((Date.now()-new Date(cs.sentAt))/86400000); return d===0?'today':d===1?'1 day ago':`${d} days ago`; })() : '';
+    const sentAgo = cs.sentAt ? (() => { const d=Math.floor((Date.now()-new Date(cs.sentAt))/86400000); return d===0?'today':d===1?'1 day ago':`${d}d ago`; })() : '';
     const lastAct = cs.lastActivity ? new Date(cs.lastActivity).toLocaleDateString('en-US',{month:'short',day:'numeric'}) : '—';
     const catLabel = CAT_LABELS[c.category] || c.category;
-    return `<tr class="contact-row" onclick="cycleStatus(${c.id})">
-      <td><div class="contact-name">${c.name}</div><div class="contact-handle">${c.handle}</div></td>
-      <td class="contact-email">${c.email}</td>
+    const notes = (cs.notes || '').replace(/"/g, '&quot;');
+    return `<tr class="contact-row" onclick="cycleStatus('${c.id}')">
+      <td><div class="contact-name">${c.name}</div><div class="contact-handle">${c.handle || c.pub || ''}</div></td>
+      <td class="contact-email" title="${c.email}">${c.email}</td>
       <td><span class="cat-tag ${c.category}">${catLabel}</span></td>
       <td><span class="priority ${c.priority}">${c.priority}</span></td>
       <td><span class="status ${scls}"><span class="status-dot"></span>${slbl}</span></td>
       <td><div class="date-cell">${sentDate}<div class="days-ago">${sentAgo}</div></div></td>
       <td><div class="date-cell">${lastAct}</div></td>
       <td class="notes-cell" onclick="event.stopPropagation()">
-        <input type="text" value="${(cs.notes||'').replace(/"/g,'&quot;')}" placeholder="Add note…" onchange="updateNote(${c.id},this.value)" />
+        <input type="text" value="${notes}" placeholder="Add note…" onchange="updateNote('${c.id}',this.value)" />
       </td>
     </tr>`;
   }).join('');
 }
 
 function renderSidebar() {
-  const due = CONTACTS.filter(c => state.contacts[c.id].status === 'follow-up');
-  document.getElementById('followUpList').innerHTML = due.length ? due.map(c => {
-    const d = state.contacts[c.id].sentAt ? Math.floor((Date.now()-new Date(state.contacts[c.id].sentAt))/86400000) : 0;
-    return `<div class="followup-item"><div><div class="followup-name">${c.name}</div><div class="followup-detail">${c.email}</div></div><span class="followup-badge">${d}d no reply</span></div>`;
-  }).join('') : '<p style="font-size:12px;color:var(--muted);font-style:italic;">No follow-ups due.</p>';
-  document.getElementById('activityFeed').innerHTML = (state.activity||[]).length ? state.activity.slice(0,8).map(a =>
-    `<div class="activity-item"><div class="activity-text"><span class="activity-icon icon-${a.type}"></span>${a.text}</div><div class="activity-time">${new Date(a.time).toLocaleDateString('en-US',{month:'short',day:'numeric'})}</div></div>`
-  ).join('') : '<p style="font-size:12px;color:var(--muted);font-style:italic;">Sync to load activity.</p>';
-  const notSent = CONTACTS.filter(c => state.contacts[c.id].status === 'not-sent');
-  document.getElementById('todoList').innerHTML = notSent.length ? notSent.slice(0,6).map(c =>
-    `<div class="followup-item"><div><div class="followup-name">${c.name}</div><div class="followup-detail" style="font-size:10px">${c.subject}</div></div><span class="priority ${c.priority}" style="font-size:9px;padding:2px 6px;flex-shrink:0">${c.priority}</span></div>`
-  ).join('') + (notSent.length > 6 ? `<p style="font-size:11px;color:var(--muted);padding-top:8px">+${notSent.length-6} more</p>` : '')
-  : '<p style="font-size:12px;color:var(--muted);font-style:italic;">All sent — great work!</p>';
+  const due = CONTACTS.filter(c => state.contacts[c.id]?.status === 'follow-up');
+  document.getElementById('followUpList').innerHTML = due.length
+    ? due.map(c => {
+        const d = state.contacts[c.id]?.sentAt ? Math.floor((Date.now()-new Date(state.contacts[c.id].sentAt))/86400000) : 0;
+        return `<div class="followup-item"><div><div class="followup-name">${c.name}</div><div class="followup-detail">${c.email}</div></div><span class="followup-badge">${d}d no reply</span></div>`;
+      }).join('')
+    : '<p style="font-size:12px;color:var(--muted);font-style:italic;">No follow-ups due.</p>';
+
+  document.getElementById('activityFeed').innerHTML = (state.activity||[]).length
+    ? state.activity.slice(0,8).map(a =>
+        `<div class="activity-item"><div class="activity-text"><span class="activity-icon icon-${a.type}"></span>${a.text}</div><div class="activity-time">${new Date(a.time).toLocaleDateString('en-US',{month:'short',day:'numeric'})}</div></div>`
+      ).join('')
+    : '<p style="font-size:12px;color:var(--muted);font-style:italic;">No activity yet.</p>';
+
+  const notSent = CONTACTS.filter(c => (state.contacts[c.id]?.status || 'not-sent') === 'not-sent');
+  const topFirst = [...notSent].sort((a,b) => ({top:0,high:1,med:2}[a.priority]||2) - ({top:0,high:1,med:2}[b.priority]||2));
+  document.getElementById('todoList').innerHTML = topFirst.length
+    ? topFirst.slice(0,6).map(c =>
+        `<div class="followup-item"><div><div class="followup-name">${c.name}</div><div class="followup-detail" style="font-size:10px;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.subject||c.pub||''}</div></div><span class="priority ${c.priority}" style="font-size:9px;padding:2px 6px;flex-shrink:0">${c.priority}</span></div>`
+      ).join('') + (topFirst.length > 6 ? `<p style="font-size:11px;color:var(--muted);padding-top:8px">+${topFirst.length-6} more</p>` : '')
+    : '<p style="font-size:12px;color:var(--muted);font-style:italic;">All sent — great work!</p>';
 }
 
+// ─── INTERACTIONS ─────────────────────────────────────────────────────────────
 function cycleStatus(id) {
+  if (!state.contacts[id]) state.contacts[id] = { status:'not-sent', sentAt:null, repliedAt:null, notes:'', lastActivity:null };
   const cs = state.contacts[id];
   const order = ['not-sent','sent','follow-up','follow-up-sent','replied'];
   const next = order[(order.indexOf(cs.status)+1) % order.length];
@@ -577,11 +666,15 @@ function cycleStatus(id) {
   if (next==='replied' && !cs.repliedAt) cs.repliedAt = new Date().toISOString();
   cs.lastActivity = new Date().toISOString();
   const contact = CONTACTS.find(c => c.id===id);
-  addActivity(next==='replied'?'replied':'sent', `${contact.name} marked as ${next.replace(/-/g,' ')}`, new Date().toISOString());
+  if (contact) addActivity(next==='replied'?'replied':'sent', `${contact.name} marked as ${next.replace(/-/g,' ')}`, new Date().toISOString());
   saveState(); render();
 }
 
-function updateNote(id, value) { state.contacts[id].notes = value; saveState(); }
+function updateNote(id, value) {
+  if (!state.contacts[id]) state.contacts[id] = { status:'not-sent', sentAt:null, repliedAt:null, notes:'', lastActivity:null };
+  state.contacts[id].notes = value;
+  saveState();
+}
 
 function filterTable(filter, btn) {
   currentFilter = filter;
@@ -597,8 +690,22 @@ function filterCategory(cat, btn) {
 
 function addActivity(type, text, time) {
   if (!state.activity) state.activity = [];
-  state.activity.unshift({type,text,time});
+  state.activity.unshift({type, text, time});
   if (state.activity.length > 50) state.activity = state.activity.slice(0,50);
+}
+
+// ─── UI HELPERS ───────────────────────────────────────────────────────────────
+function showLoading(title, msg) {
+  document.getElementById('loadingTitle').textContent = title;
+  document.getElementById('loadingMsg').textContent = msg;
+  document.getElementById('loadingOverlay').classList.add('visible');
+}
+function hideLoading() { document.getElementById('loadingOverlay').classList.remove('visible'); }
+
+function showInfo(msg, isError = false) {
+  const bar = document.getElementById('infoBar');
+  bar.textContent = msg;
+  bar.className = 'info-bar visible' + (isError ? ' error' : '');
 }
 
 function showToast(msg) {
@@ -607,14 +714,13 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 4000);
 }
 
+// ─── INIT ─────────────────────────────────────────────────────────────────────
 loadState();
-CONTACTS.forEach(c => {
-  const cs = state.contacts[c.id];
-  if (cs.status==='sent' && cs.sentAt && Math.floor((Date.now()-new Date(cs.sentAt))/86400000) >= FOLLOW_UP_DAYS) cs.status = 'follow-up';
-});
-saveState(); render();
 
-if (state.lastSync) document.getElementById('lastSyncLabel').textContent = `Last synced ${new Date(state.lastSync).toLocaleDateString('en-US',{month:'short',day:'numeric'})}`;
+if (state.lastSync) {
+  document.getElementById('lastSyncLabel').textContent = `Last synced ${new Date(state.lastSync).toLocaleDateString('en-US',{month:'short',day:'numeric'})}`;
+}
+
 if (!getClientId()) {
   document.getElementById('setupBanner').classList.add('visible');
 } else {
