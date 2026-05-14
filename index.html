@@ -15,6 +15,7 @@
     --muted: #8B6E5A;
     --border: rgba(40,20,7,0.12);
     --success: #4A7C59;
+    --draft: #5A4080;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { background: var(--cream); color: var(--brown); font-family: 'DM Sans', sans-serif; font-size: 14px; min-height: 100vh; }
@@ -49,10 +50,11 @@
   .client-id-input:focus { border-color: var(--gold); }
   .client-id-save { background: var(--gold); color: var(--brown); border: none; padding: 10px 20px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; white-space: nowrap; }
 
-  .stats-bar { display: grid; grid-template-columns: repeat(5, 1fr); border-bottom: 1px solid var(--border); margin: 0 48px; }
+  .stats-bar { display: grid; grid-template-columns: repeat(6, 1fr); border-bottom: 1px solid var(--border); margin: 0 48px; }
   .stat { padding: 22px 20px; border-right: 1px solid var(--border); text-align: center; }
   .stat:last-child { border-right: none; }
   .stat-num { font-family: 'Lusitana', serif; font-size: 32px; font-weight: 700; color: var(--terracotta); display: block; line-height: 1; margin-bottom: 6px; }
+  .stat-num.draft-color { color: var(--draft); }
   .stat-label { font-size: 10px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
 
   .main { padding: 28px 48px; display: grid; grid-template-columns: 1fr 300px; gap: 28px; }
@@ -66,7 +68,7 @@
   .info-bar.error { border-left-color: var(--terracotta); color: var(--terracotta); background: rgba(170,51,0,0.05); }
 
   .filter-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 8px; }
-  .filter-tabs { display: flex; }
+  .filter-tabs { display: flex; flex-wrap: wrap; }
   .filter-tab { padding: 8px 18px; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; background: none; border-top: none; border-left: none; border-right: none; font-family: 'DM Sans', sans-serif; transition: color 0.15s; }
   .filter-tab.active { color: var(--terracotta); border-bottom-color: var(--terracotta); }
   .filter-tab:hover { color: var(--brown); }
@@ -86,29 +88,34 @@
 
   .cat-tag { display: inline-block; font-size: 9px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; padding: 2px 7px; border-radius: 2px; white-space: nowrap; }
   .cat-tag.food-editors { background: rgba(74,124,89,0.12); color: #4A7C59; }
-  .cat-tag.lifestyle { background: rgba(200,124,42,0.12); color: var(--gold); }
-  .cat-tag.creators { background: rgba(170,51,0,0.1); color: var(--terracotta); }
-  .cat-tag.luxury { background: rgba(40,20,7,0.08); color: var(--brown); }
-  .cat-tag.retail { background: rgba(100,80,140,0.12); color: #5A4080; }
+  .cat-tag.lifestyle    { background: rgba(200,124,42,0.12); color: var(--gold); }
+  .cat-tag.creators     { background: rgba(170,51,0,0.1); color: var(--terracotta); }
+  .cat-tag.luxury       { background: rgba(40,20,7,0.08); color: var(--brown); }
+  .cat-tag.retail       { background: rgba(100,80,140,0.12); color: #5A4080; }
+  .cat-tag.press        { background: rgba(0,80,140,0.10); color: #005080; }
+  .cat-tag.tv           { background: rgba(140,60,0,0.10); color: #8C3C00; }
+  .cat-tag.newsletters  { background: rgba(0,120,80,0.10); color: #007850; }
 
   .status { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; white-space: nowrap; }
   .status-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
-  .status.not-sent { background: rgba(40,20,7,0.06); color: var(--muted); }
+  .status.not-sent       { background: rgba(40,20,7,0.06); color: var(--muted); }
   .status.not-sent .status-dot { background: var(--muted); }
-  .status.sent { background: rgba(200,124,42,0.1); color: var(--gold); }
+  .status.draft-ready    { background: rgba(90,64,128,0.1); color: var(--draft); }
+  .status.draft-ready .status-dot { background: var(--draft); animation: pulse 2s infinite; }
+  .status.sent           { background: rgba(200,124,42,0.1); color: var(--gold); }
   .status.sent .status-dot { background: var(--gold); }
-  .status.replied { background: rgba(74,124,89,0.1); color: var(--success); }
+  .status.replied        { background: rgba(74,124,89,0.1); color: var(--success); }
   .status.replied .status-dot { background: var(--success); }
-  .status.follow-up { background: rgba(170,51,0,0.1); color: var(--terracotta); }
+  .status.follow-up      { background: rgba(170,51,0,0.1); color: var(--terracotta); }
   .status.follow-up .status-dot { background: var(--terracotta); animation: pulse 1.5s infinite; }
   .status.follow-up-sent { background: rgba(40,20,7,0.06); color: var(--muted); }
   .status.follow-up-sent .status-dot { background: var(--muted); }
   @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.3} }
 
   .priority { font-size: 9px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; padding: 2px 7px; border: 1px solid; }
-  .priority.top { border-color: var(--terracotta); color: var(--terracotta); }
+  .priority.top  { border-color: var(--terracotta); color: var(--terracotta); }
   .priority.high { border-color: var(--gold); color: var(--gold); }
-  .priority.med { border-color: var(--muted); color: var(--muted); }
+  .priority.med  { border-color: var(--muted); color: var(--muted); }
 
   .date-cell { font-size: 12px; color: var(--muted); }
   .days-ago { font-size: 10px; color: var(--muted); font-weight: 300; }
@@ -125,15 +132,17 @@
   .followup-name { font-size: 13px; font-weight: 500; color: var(--brown); }
   .followup-detail { font-size: 11px; color: var(--muted); margin-top: 2px; }
   .followup-badge { font-size: 10px; font-weight: 500; color: var(--terracotta); background: rgba(170,51,0,0.08); padding: 3px 8px; white-space: nowrap; flex-shrink: 0; }
+  .followup-badge.draft { color: var(--draft); background: rgba(90,64,128,0.08); }
   .activity-item { padding: 9px 0; border-bottom: 1px solid var(--border); }
   .activity-item:last-child { border-bottom: none; }
   .activity-text { font-size: 12px; color: var(--brown); line-height: 1.5; }
   .activity-time { font-size: 10px; color: var(--muted); margin-top: 3px; }
   .activity-icon { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
-  .icon-sent { background: var(--gold); }
-  .icon-replied { background: var(--success); }
+  .icon-sent     { background: var(--gold); }
+  .icon-replied  { background: var(--success); }
   .icon-followup { background: var(--terracotta); }
-  .icon-new { background: #5A4080; }
+  .icon-new      { background: #5A4080; }
+  .icon-draft    { background: var(--draft); }
 
   .loading-overlay { display: none; position: fixed; inset: 0; background: rgba(255,251,243,0.92); z-index: 100; align-items: center; justify-content: center; flex-direction: column; gap: 16px; }
   .loading-overlay.visible { display: flex; }
@@ -148,8 +157,6 @@
   .toast.show { opacity: 1; transform: translateY(0); }
 
   .gold-rule { height: 1px; background: linear-gradient(to right, var(--gold), transparent); margin: 0 48px; opacity: 0.4; }
-
-  .new-badge { display: inline-block; font-size: 8px; font-weight: 700; letter-spacing: 0.1em; color: #5A4080; background: rgba(100,80,140,0.12); padding: 1px 5px; border-radius: 2px; margin-left: 6px; vertical-align: middle; text-transform: uppercase; }
 </style>
 </head>
 <body>
@@ -184,16 +191,17 @@
   <ol class="setup-steps">
     <li>Go to <a href="https://console.cloud.google.com" target="_blank">console.cloud.google.com</a> → your project → ensure <strong>Gmail API</strong> and <strong>Google Sheets API</strong> are both enabled</li>
     <li>Under <strong>Credentials → OAuth 2.0 Client ID</strong>, confirm <code>https://vandanarambaran.github.io</code> is in Authorized JavaScript origins</li>
-    <li>Paste your <strong>Client ID</strong> below and click Save & Connect</li>
+    <li>Paste your <strong>Client ID</strong> below and click Save &amp; Connect</li>
   </ol>
   <div class="client-id-row">
     <input class="client-id-input" type="text" id="clientIdInput" placeholder="123456789-abc.apps.googleusercontent.com" />
-    <button class="client-id-save" onclick="saveClientId()">Save & Connect</button>
+    <button class="client-id-save" onclick="saveClientId()">Save &amp; Connect</button>
   </div>
 </div>
 
 <div class="stats-bar">
   <div class="stat"><span class="stat-num" id="statTotal">—</span><span class="stat-label">Total</span></div>
+  <div class="stat"><span class="stat-num draft-color" id="statDraft">—</span><span class="stat-label">Draft Ready</span></div>
   <div class="stat"><span class="stat-num" id="statSent">—</span><span class="stat-label">Sent</span></div>
   <div class="stat"><span class="stat-num" id="statReplied">—</span><span class="stat-label">Replied</span></div>
   <div class="stat"><span class="stat-num" id="statFollowUp">—</span><span class="stat-label">Follow-Up Due</span></div>
@@ -213,6 +221,7 @@
       <div class="filter-tabs">
         <button class="filter-tab active" onclick="filterTable('all',this)">All</button>
         <button class="filter-tab" onclick="filterTable('not-sent',this)">Not Sent</button>
+        <button class="filter-tab" onclick="filterTable('draft-ready',this)">Draft Ready</button>
         <button class="filter-tab" onclick="filterTable('sent',this)">Sent</button>
         <button class="filter-tab" onclick="filterTable('follow-up',this)">Follow-Up Due</button>
         <button class="filter-tab" onclick="filterTable('replied',this)">Replied</button>
@@ -224,6 +233,9 @@
         <button class="cat-btn" onclick="filterCategory('creators',this)">Creators</button>
         <button class="cat-btn" onclick="filterCategory('luxury',this)">Luxury</button>
         <button class="cat-btn" onclick="filterCategory('retail',this)">Retail</button>
+        <button class="cat-btn" onclick="filterCategory('press',this)">Press</button>
+        <button class="cat-btn" onclick="filterCategory('tv',this)">TV</button>
+        <button class="cat-btn" onclick="filterCategory('newsletters',this)">Newsletters</button>
       </div>
     </div>
     <table class="contact-table">
@@ -247,6 +259,10 @@
 
   <div class="sidebar">
     <div class="sidebar-card">
+      <div class="sidebar-card-title">📝 Draft Ready to Send</div>
+      <div id="draftList"><p style="font-size:12px;color:var(--muted);font-style:italic;">Run Gmail Sync to detect drafts.</p></div>
+    </div>
+    <div class="sidebar-card">
       <div class="sidebar-card-title">⚡ Follow-Ups Due</div>
       <div id="followUpList"><p style="font-size:12px;color:var(--muted);font-style:italic;">Load sheet to begin.</p></div>
     </div>
@@ -264,7 +280,6 @@
 <script src="https://accounts.google.com/gsi/client" async></script>
 
 <script>
-// ─── CONFIG ───────────────────────────────────────────────────────────────────
 const SHEET_ID = '1aZSVPEDS7PUF9eoaCOuGPpkC9TEZwUIDYBcDOcsqUug';
 const FOLLOW_UP_DAYS = 8;
 const SCOPES = [
@@ -273,24 +288,27 @@ const SCOPES = [
 ].join(' ');
 
 const TABS = [
-  { name: 'Food Editors',               category: 'food-editors' },
-  { name: 'Lifestyle Journalists',      category: 'lifestyle'    },
-  { name: 'Creators',                   category: 'creators'     },
-  { name: 'Luxury Lifestyle Expansion', category: 'luxury'       },
-  { name: 'NYC Retail Partners',        category: 'retail'       },
+  { name: 'Food Editors',               category: 'food-editors', cols: { name:1, pub:2, email:4, handle:-1, pitch:3, priority:-1, notes:5 } },
+  { name: 'Lifestyle Journalists',      category: 'lifestyle',    cols: { name:1, pub:2, email:4, handle:5,  pitch:6, priority:7,  notes:8 } },
+  { name: 'Creators',                   category: 'creators',     cols: { name:1, pub:2, email:4, handle:5,  pitch:6, priority:7,  notes:8 } },
+  { name: 'Luxury Lifestyle Expansion', category: 'luxury',       cols: { name:1, pub:2, email:4, handle:5,  pitch:6, priority:7,  notes:8 } },
+  { name: 'NYC Retail Partners',        category: 'retail',       cols: { name:1, pub:2, email:5, handle:-1, pitch:3, priority:6,  notes:7 } },
+  { name: 'Print & Digital Press',      category: 'press',        cols: { name:1, pub:2, email:4, handle:5,  pitch:6, priority:7,  notes:8 } },
+  { name: 'Morning Shows & TV',         category: 'tv',           cols: { name:1, pub:2, email:4, handle:-1, pitch:3, priority:-1, notes:5 } },
+  { name: 'Newsletters & Substacks',    category: 'newsletters',  cols: { name:1, pub:2, email:4, handle:-1, pitch:3, priority:-1, notes:5 } },
 ];
-
-const COL = { num: 0, name: 1, pub: 2, role: 3, email: 4, handle: 5, pitch: 6, priority: 7, notes: 8 };
 
 const CAT_LABELS = {
   'food-editors': 'Food Editor',
-  'lifestyle': 'Lifestyle',
-  'creators': 'Creator',
-  'luxury': 'Luxury',
-  'retail': 'Retail'
+  'lifestyle':    'Lifestyle',
+  'creators':     'Creator',
+  'luxury':       'Luxury',
+  'retail':       'Retail',
+  'press':        'Press',
+  'tv':           'TV',
+  'newsletters':  'Newsletter',
 };
 
-// ─── STATE ────────────────────────────────────────────────────────────────────
 let CONTACTS = [];
 let state = { contacts: {}, activity: [], lastSync: null, lastSheetLoad: null };
 let accessToken = null;
@@ -298,22 +316,13 @@ let tokenClient = null;
 let currentFilter = 'all';
 let currentCategory = 'all';
 
-// ─── PERSISTENCE ──────────────────────────────────────────────────────────────
 function loadState() {
+  try { const s = localStorage.getItem('wiri-crm-v5'); if (s) state = { ...state, ...JSON.parse(s) }; } catch(e) {}
+  const t = sessionStorage.getItem('wiri-gmail-token');
+  if (t) { accessToken = t; setAuthConnected(); }
   try {
-    const saved = localStorage.getItem('wiri-crm-v5');
-    if (saved) state = { ...state, ...JSON.parse(saved) };
-  } catch(e) {}
-  const savedToken = sessionStorage.getItem('wiri-gmail-token');
-  if (savedToken) { accessToken = savedToken; setAuthConnected(); }
-  try {
-    const cached = localStorage.getItem('wiri-contacts-cache');
-    if (cached) {
-      CONTACTS = JSON.parse(cached);
-      ensureContactState();
-      render();
-      showInfo(`${CONTACTS.length} contacts loaded from cache. Hit "Load Sheet" to refresh.`);
-    }
+    const c = localStorage.getItem('wiri-contacts-cache');
+    if (c) { CONTACTS = JSON.parse(c); ensureContactState(); render(); showInfo(`${CONTACTS.length} contacts loaded from cache. Hit "Load Sheet" to refresh.`); }
   } catch(e) {}
 }
 
@@ -322,13 +331,10 @@ function cacheContacts() { localStorage.setItem('wiri-contacts-cache', JSON.stri
 
 function ensureContactState() {
   CONTACTS.forEach(c => {
-    if (!state.contacts[c.id]) {
-      state.contacts[c.id] = { status: 'not-sent', sentAt: null, repliedAt: null, notes: '', lastActivity: null };
-    }
+    if (!state.contacts[c.id]) state.contacts[c.id] = { status:'not-sent', sentAt:null, repliedAt:null, notes:'', lastActivity:null };
   });
 }
 
-// ─── AUTH ─────────────────────────────────────────────────────────────────────
 function getClientId() { return localStorage.getItem('wiri-client-id') || ''; }
 
 function saveClientId() {
@@ -374,15 +380,15 @@ function setAuthConnected() {
   document.getElementById('gmailBtn').disabled = false;
 }
 
-// ─── SHEETS FETCH ─────────────────────────────────────────────────────────────
 async function fetchTab(tabName) {
-  const range = encodeURIComponent(`'${tabName}'!A:I`);
+  const range = encodeURIComponent(`'${tabName}'!A:J`);
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${range}`;
   const res = await fetch(url, { headers: { Authorization: `Bearer ${accessToken}` } });
   if (res.status === 401) { accessToken = null; sessionStorage.removeItem('wiri-gmail-token'); throw new Error('auth_expired'); }
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    throw new Error(`Sheets error on tab "${tabName}": ${err?.error?.message || res.status}`);
+    if (res.status === 400) return [];
+    throw new Error(`Sheet error on tab "${tabName}": ${err?.error?.message || res.status}`);
   }
   const data = await res.json();
   return data.values || [];
@@ -391,14 +397,13 @@ async function fetchTab(tabName) {
 function parsePriority(raw) {
   if (!raw) return 'med';
   const r = raw.toLowerCase();
-  if (r.includes('top')) return 'top';
-  if (r.includes('high')) return 'high';
+  if (r.includes('top') || r.includes('🔴')) return 'top';
+  if (r.includes('high') || r.includes('🟠')) return 'high';
   return 'med';
 }
 
-function makeId(name, email) {
-  return (name + '|' + email).toLowerCase().replace(/\s+/g, '_');
-}
+function makeId(name, email) { return (name + '|' + email).toLowerCase().replace(/\s+/g, '_'); }
+function getCol(row, idx) { if (idx < 0 || idx >= row.length) return ''; return (row[idx] || '').trim(); }
 
 async function syncSheet() {
   if (!accessToken) { showToast('Connect Google first.'); return; }
@@ -408,28 +413,29 @@ async function syncSheet() {
     for (const tab of TABS) {
       document.getElementById('loadingMsg').textContent = `Reading "${tab.name}"...`;
       const rows = await fetchTab(tab.name);
-      const dataRows = rows.slice(2); // skip title row + header row
+      if (!rows.length) continue;
+      const dataRows = rows.slice(2);
       for (const row of dataRows) {
-        const name = (row[COL.name] || '').trim();
-        const email = (row[COL.email] || '').trim();
-        if (!name || name === 'Name') continue;
+        const name  = getCol(row, tab.cols.name);
+        const email = getCol(row, tab.cols.email);
+        if (!name || name.toLowerCase() === 'name' || name.toLowerCase() === 'show') continue;
+        const handle = getCol(row, tab.cols.handle);
+        if (!email && !handle) continue;
         newContacts.push({
-          id: makeId(name, email),
+          id:       makeId(name, email),
           name,
           email,
-          handle: (row[COL.handle] || '').trim(),
-          pub: (row[COL.pub] || '').trim(),
-          subject: (row[COL.pitch] || '').trim().substring(0, 80),
-          priority: parsePriority(row[COL.priority] || ''),
+          handle,
+          pub:      getCol(row, tab.cols.pub),
+          subject:  getCol(row, tab.cols.pitch).substring(0, 80),
+          priority: parsePriority(getCol(row, tab.cols.priority)),
           category: tab.category,
-          channel: 'email',
         });
       }
     }
 
     const existingIds = new Set(CONTACTS.map(c => c.id));
-    const newlyAdded = newContacts.filter(c => !existingIds.has(c.id));
-
+    const newlyAdded  = newContacts.filter(c => !existingIds.has(c.id));
     CONTACTS = newContacts;
     ensureContactState();
     cacheContacts();
@@ -437,33 +443,32 @@ async function syncSheet() {
     saveState();
 
     if (newlyAdded.length > 0) {
-      newlyAdded.forEach(c => addActivity('new', `New contact added: ${c.name}`, new Date().toISOString()));
+      newlyAdded.forEach(c => addActivity('new', `New contact: ${c.name}`, new Date().toISOString()));
       showToast(`Sheet loaded — ${CONTACTS.length} contacts, ${newlyAdded.length} new`);
     } else {
       showToast(`Sheet loaded — ${CONTACTS.length} contacts`);
     }
 
-    showInfo(`Sheet last loaded ${new Date().toLocaleString()}. ${CONTACTS.length} contacts across 5 categories.`);
+    const catBreakdown = TABS.map(t => {
+      const count = CONTACTS.filter(c => c.category === t.category).length;
+      return count ? `${count} ${CAT_LABELS[t.category]}` : null;
+    }).filter(Boolean).join(' · ');
+
+    showInfo(`Loaded ${new Date().toLocaleString()} — ${catBreakdown}`);
     document.getElementById('lastSyncLabel').textContent = `Sheet: ${new Date().toLocaleTimeString()}`;
     render();
   } catch(err) {
     hideLoading();
-    if (err.message === 'auth_expired') {
-      handleAuthExpired();
-    } else {
-      showInfo(err.message, true);
-      showToast('Sheet load failed — see error above');
-      console.error(err);
-    }
+    if (err.message === 'auth_expired') { handleAuthExpired(); }
+    else { showInfo(err.message, true); showToast('Sheet load failed — see error above'); console.error(err); }
     return;
   }
   hideLoading();
 }
 
-// ─── GMAIL SYNC ───────────────────────────────────────────────────────────────
 async function gmailSearch(query) {
   const res = await fetch(
-    `https://gmail.googleapis.com/gmail/v1/users/me/messages?q=${encodeURIComponent(query)}&maxResults=100`,
+    `https://gmail.googleapis.com/gmail/v1/users/me/messages?q=${encodeURIComponent(query)}&maxResults=200`,
     { headers: { Authorization: `Bearer ${accessToken}` } }
   );
   if (res.status === 401) throw new Error('auth_expired');
@@ -481,6 +486,40 @@ async function gmailGetMessage(id) {
   return res.json();
 }
 
+async function fetchDraftRecipients() {
+  const res = await fetch(
+    `https://gmail.googleapis.com/gmail/v1/users/me/drafts?maxResults=500`,
+    { headers: { Authorization: `Bearer ${accessToken}` } }
+  );
+  if (res.status === 401) throw new Error('auth_expired');
+  if (!res.ok) return new Set();
+  const data = await res.json();
+  const drafts = data.drafts || [];
+  const recipients = new Set();
+  const BATCH = 20;
+  for (let i = 0; i < drafts.length; i += BATCH) {
+    const batch = drafts.slice(i, i + BATCH);
+    await Promise.all(batch.map(async d => {
+      try {
+        const r = await fetch(
+          `https://gmail.googleapis.com/gmail/v1/users/me/drafts/${d.id}?format=metadata`,
+          { headers: { Authorization: `Bearer ${accessToken}` } }
+        );
+        if (!r.ok) return;
+        const dd = await r.json();
+        const headers = dd?.message?.payload?.headers || [];
+        const toHeader = headers.find(h => h.name.toLowerCase() === 'to');
+        if (toHeader?.value) {
+          const emails = toHeader.value.match(/[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}/g) || [];
+          emails.forEach(e => recipients.add(e.toLowerCase()));
+        }
+      } catch(e) {}
+    }));
+    if (i + BATCH < drafts.length) await new Promise(r => setTimeout(r, 150));
+  }
+  return recipients;
+}
+
 function getHeader(msg, name) {
   const h = msg.payload?.headers?.find(h => h.name.toLowerCase() === name.toLowerCase());
   return h?.value || '';
@@ -489,23 +528,41 @@ function getHeader(msg, name) {
 async function runGmailSync() {
   if (!accessToken) { showToast('Connect Google first.'); return; }
   if (CONTACTS.length === 0) { showToast('Load the sheet first.'); return; }
-  showLoading('Gmail Sync', 'Searching your Sent mail...');
+  showLoading('Gmail Sync', 'Reading your drafts...');
   const btn = document.getElementById('gmailBtn');
   btn.disabled = true;
   try {
     let changesFound = 0;
-    const validContacts = CONTACTS.filter(c => c.email.includes('@'));
+    const validContacts = CONTACTS.filter(c => c.email && c.email.includes('@'));
+
+    document.getElementById('loadingMsg').textContent = 'Scanning Gmail drafts...';
+    const draftRecipients = await fetchDraftRecipients();
+
+    validContacts.forEach(c => {
+      const cs = state.contacts[c.id];
+      if (!cs) return;
+      const hasDraft = draftRecipients.has(c.email.toLowerCase());
+      if (hasDraft && cs.status === 'not-sent') {
+        cs.status = 'draft-ready'; cs.lastActivity = new Date().toISOString();
+        addActivity('draft', `Draft ready: ${c.name}`, new Date().toISOString());
+        changesFound++;
+      } else if (!hasDraft && cs.status === 'draft-ready') {
+        cs.status = 'not-sent'; changesFound++;
+      }
+    });
+
+    document.getElementById('loadingMsg').textContent = 'Searching Sent mail...';
     const emailQuery = validContacts.map(c => `to:${c.email}`).join(' OR ');
     const sentMessages = await gmailSearch(`in:sent (${emailQuery})`);
-    document.getElementById('loadingMsg').textContent = `Found ${sentMessages.length} sent emails — reading...`;
+    document.getElementById('loadingMsg').textContent = `Found ${sentMessages.length} sent — reading...`;
 
     for (const msg of sentMessages) {
       const full = await gmailGetMessage(msg.id);
       if (!full) continue;
       const toHeader = getHeader(full, 'To').toLowerCase();
-      const dateStr = getHeader(full, 'Date');
-      const sentAt = dateStr ? new Date(dateStr).toISOString() : new Date(parseInt(full.internalDate)).toISOString();
-      const contact = validContacts.find(c => toHeader.includes(c.email.toLowerCase()));
+      const dateStr  = getHeader(full, 'Date');
+      const sentAt   = dateStr ? new Date(dateStr).toISOString() : new Date(parseInt(full.internalDate)).toISOString();
+      const contact  = validContacts.find(c => toHeader.includes(c.email.toLowerCase()));
       if (!contact) continue;
       const cs = state.contacts[contact.id];
       if (cs && !cs.sentAt) {
@@ -522,7 +579,7 @@ async function runGmailSync() {
       if (replyMsgs.length > 0) {
         const full = await gmailGetMessage(replyMsgs[0].id);
         if (full) {
-          const dateStr = getHeader(full, 'Date');
+          const dateStr   = getHeader(full, 'Date');
           const repliedAt = dateStr ? new Date(dateStr).toISOString() : new Date(parseInt(full.internalDate)).toISOString();
           const cs = state.contacts[contact.id];
           if (cs && !cs.repliedAt && new Date(repliedAt) > new Date(cs.sentAt)) {
@@ -549,7 +606,8 @@ async function runGmailSync() {
     state.lastSync = new Date().toISOString();
     saveState();
     document.getElementById('lastSyncLabel').textContent = `Gmail: ${new Date().toLocaleTimeString()}`;
-    showInfo(`Gmail synced ${new Date().toLocaleString()} — ${changesFound > 0 ? changesFound + ' update(s) found' : 'all up to date'}.`);
+    const draftCount = CONTACTS.filter(c => state.contacts[c.id]?.status === 'draft-ready').length;
+    showInfo(`Gmail synced ${new Date().toLocaleString()} — ${draftCount} drafts detected, ${changesFound} update(s) total.`);
     showToast(changesFound > 0 ? `${changesFound} update(s) found` : 'All up to date');
     render();
   } catch(err) {
@@ -570,17 +628,18 @@ function handleAuthExpired() {
   showToast('Session expired — click Connect to re-authenticate.');
 }
 
-// ─── RENDER ───────────────────────────────────────────────────────────────────
 function render() { renderStats(); renderTable(); renderSidebar(); }
 
 function renderStats() {
   const cs = Object.values(state.contacts);
   const total = CONTACTS.length;
-  document.getElementById('statTotal').textContent = total || '—';
-  document.getElementById('statSent').textContent = cs.filter(c => ['sent','follow-up','follow-up-sent','replied'].includes(c.status)).length || (total ? 0 : '—');
-  document.getElementById('statReplied').textContent = cs.filter(c => c.status === 'replied').length || (total ? 0 : '—');
-  document.getElementById('statFollowUp').textContent = cs.filter(c => c.status === 'follow-up').length || (total ? 0 : '—');
-  document.getElementById('statPending').textContent = cs.filter(c => c.status === 'not-sent').length || (total ? 0 : '—');
+  const dash = total ? 0 : '—';
+  document.getElementById('statTotal').textContent    = total || '—';
+  document.getElementById('statDraft').textContent    = cs.filter(c => c.status === 'draft-ready').length || dash;
+  document.getElementById('statSent').textContent     = cs.filter(c => ['sent','follow-up','follow-up-sent','replied'].includes(c.status)).length || dash;
+  document.getElementById('statReplied').textContent  = cs.filter(c => c.status === 'replied').length || dash;
+  document.getElementById('statFollowUp').textContent = cs.filter(c => c.status === 'follow-up').length || dash;
+  document.getElementById('statPending').textContent  = cs.filter(c => c.status === 'not-sent').length || dash;
 }
 
 function renderTable() {
@@ -592,7 +651,7 @@ function renderTable() {
   }
   let filtered = CONTACTS.filter(c => {
     const statusMatch = currentFilter === 'all' || (state.contacts[c.id]?.status || 'not-sent') === currentFilter;
-    const catMatch = currentCategory === 'all' || c.category === currentCategory;
+    const catMatch    = currentCategory === 'all' || c.category === currentCategory;
     return statusMatch && catMatch;
   });
   document.getElementById('tableCount').textContent = `${filtered.length} contact${filtered.length !== 1 ? 's' : ''}`;
@@ -600,26 +659,26 @@ function renderTable() {
     tbody.innerHTML = '<tr class="empty-row"><td colspan="8">No contacts match this filter.</td></tr>';
     return;
   }
+  const statusMap = {
+    'not-sent':       ['not-sent',       'Not Sent'],
+    'draft-ready':    ['draft-ready',    'Draft Ready'],
+    'sent':           ['sent',           'Sent'],
+    'follow-up':      ['follow-up',      'Follow-Up Due'],
+    'follow-up-sent': ['follow-up-sent', 'Followed Up'],
+    'replied':        ['replied',        'Replied ✓'],
+  };
   tbody.innerHTML = filtered.map(c => {
-    const cs = state.contacts[c.id] || { status: 'not-sent', sentAt: null, lastActivity: null, notes: '' };
+    const cs     = state.contacts[c.id] || { status:'not-sent', sentAt:null, lastActivity:null, notes:'' };
     const status = cs.status || 'not-sent';
-    const statusMap = {
-      'not-sent': ['not-sent','Not Sent'],
-      'sent': ['sent','Sent'],
-      'follow-up': ['follow-up','Follow-Up Due'],
-      'follow-up-sent': ['follow-up-sent','Followed Up'],
-      'replied': ['replied','Replied ✓']
-    };
     const [scls, slbl] = statusMap[status] || ['not-sent','Not Sent'];
     const sentDate = cs.sentAt ? new Date(cs.sentAt).toLocaleDateString('en-US',{month:'short',day:'numeric'}) : '—';
-    const sentAgo = cs.sentAt ? (() => { const d=Math.floor((Date.now()-new Date(cs.sentAt))/86400000); return d===0?'today':d===1?'1 day ago':`${d}d ago`; })() : '';
-    const lastAct = cs.lastActivity ? new Date(cs.lastActivity).toLocaleDateString('en-US',{month:'short',day:'numeric'}) : '—';
-    const catLabel = CAT_LABELS[c.category] || c.category;
-    const notes = (cs.notes || '').replace(/"/g, '&quot;');
+    const sentAgo  = cs.sentAt ? (() => { const d=Math.floor((Date.now()-new Date(cs.sentAt))/86400000); return d===0?'today':d===1?'1d ago':`${d}d ago`; })() : '';
+    const lastAct  = cs.lastActivity ? new Date(cs.lastActivity).toLocaleDateString('en-US',{month:'short',day:'numeric'}) : '—';
+    const notes    = (cs.notes || '').replace(/"/g,'&quot;');
     return `<tr class="contact-row" onclick="cycleStatus('${c.id}')">
       <td><div class="contact-name">${c.name}</div><div class="contact-handle">${c.handle || c.pub || ''}</div></td>
       <td class="contact-email" title="${c.email}">${c.email}</td>
-      <td><span class="cat-tag ${c.category}">${catLabel}</span></td>
+      <td><span class="cat-tag ${c.category}">${CAT_LABELS[c.category] || c.category}</span></td>
       <td><span class="priority ${c.priority}">${c.priority}</span></td>
       <td><span class="status ${scls}"><span class="status-dot"></span>${slbl}</span></td>
       <td><div class="date-cell">${sentDate}<div class="days-ago">${sentAgo}</div></div></td>
@@ -632,41 +691,38 @@ function renderTable() {
 }
 
 function renderSidebar() {
+  const drafts = CONTACTS.filter(c => state.contacts[c.id]?.status === 'draft-ready');
+  document.getElementById('draftList').innerHTML = drafts.length
+    ? drafts.map(c => `<div class="followup-item"><div><div class="followup-name">${c.name}</div><div class="followup-detail">${c.email}</div></div><span class="followup-badge draft">Draft</span></div>`).join('')
+    : '<p style="font-size:12px;color:var(--muted);font-style:italic;">No drafts detected yet.</p>';
+
   const due = CONTACTS.filter(c => state.contacts[c.id]?.status === 'follow-up');
   document.getElementById('followUpList').innerHTML = due.length
-    ? due.map(c => {
-        const d = state.contacts[c.id]?.sentAt ? Math.floor((Date.now()-new Date(state.contacts[c.id].sentAt))/86400000) : 0;
-        return `<div class="followup-item"><div><div class="followup-name">${c.name}</div><div class="followup-detail">${c.email}</div></div><span class="followup-badge">${d}d no reply</span></div>`;
-      }).join('')
+    ? due.map(c => { const d=state.contacts[c.id]?.sentAt?Math.floor((Date.now()-new Date(state.contacts[c.id].sentAt))/86400000):0; return `<div class="followup-item"><div><div class="followup-name">${c.name}</div><div class="followup-detail">${c.email}</div></div><span class="followup-badge">${d}d no reply</span></div>`; }).join('')
     : '<p style="font-size:12px;color:var(--muted);font-style:italic;">No follow-ups due.</p>';
 
   document.getElementById('activityFeed').innerHTML = (state.activity||[]).length
-    ? state.activity.slice(0,8).map(a =>
-        `<div class="activity-item"><div class="activity-text"><span class="activity-icon icon-${a.type}"></span>${a.text}</div><div class="activity-time">${new Date(a.time).toLocaleDateString('en-US',{month:'short',day:'numeric'})}</div></div>`
-      ).join('')
+    ? state.activity.slice(0,8).map(a => `<div class="activity-item"><div class="activity-text"><span class="activity-icon icon-${a.type}"></span>${a.text}</div><div class="activity-time">${new Date(a.time).toLocaleDateString('en-US',{month:'short',day:'numeric'})}</div></div>`).join('')
     : '<p style="font-size:12px;color:var(--muted);font-style:italic;">No activity yet.</p>';
 
-  const notSent = CONTACTS.filter(c => (state.contacts[c.id]?.status || 'not-sent') === 'not-sent');
-  const topFirst = [...notSent].sort((a,b) => ({top:0,high:1,med:2}[a.priority]||2) - ({top:0,high:1,med:2}[b.priority]||2));
+  const notSent  = CONTACTS.filter(c => (state.contacts[c.id]?.status||'not-sent') === 'not-sent');
+  const topFirst = [...notSent].sort((a,b) => ({top:0,high:1,med:2}[a.priority]||2)-({top:0,high:1,med:2}[b.priority]||2));
   document.getElementById('todoList').innerHTML = topFirst.length
-    ? topFirst.slice(0,6).map(c =>
-        `<div class="followup-item"><div><div class="followup-name">${c.name}</div><div class="followup-detail" style="font-size:10px;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.subject||c.pub||''}</div></div><span class="priority ${c.priority}" style="font-size:9px;padding:2px 6px;flex-shrink:0">${c.priority}</span></div>`
-      ).join('') + (topFirst.length > 6 ? `<p style="font-size:11px;color:var(--muted);padding-top:8px">+${topFirst.length-6} more</p>` : '')
+    ? topFirst.slice(0,6).map(c => `<div class="followup-item"><div><div class="followup-name">${c.name}</div><div class="followup-detail" style="font-size:10px;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.subject||c.pub||''}</div></div><span class="priority ${c.priority}" style="font-size:9px;padding:2px 6px;flex-shrink:0">${c.priority}</span></div>`).join('') + (topFirst.length>6?`<p style="font-size:11px;color:var(--muted);padding-top:8px">+${topFirst.length-6} more</p>`:'')
     : '<p style="font-size:12px;color:var(--muted);font-style:italic;">All sent — great work!</p>';
 }
 
-// ─── INTERACTIONS ─────────────────────────────────────────────────────────────
 function cycleStatus(id) {
   if (!state.contacts[id]) state.contacts[id] = { status:'not-sent', sentAt:null, repliedAt:null, notes:'', lastActivity:null };
   const cs = state.contacts[id];
-  const order = ['not-sent','sent','follow-up','follow-up-sent','replied'];
-  const next = order[(order.indexOf(cs.status)+1) % order.length];
+  const order = ['not-sent','draft-ready','sent','follow-up','follow-up-sent','replied'];
+  const next  = order[(order.indexOf(cs.status)+1) % order.length];
   cs.status = next;
-  if (next==='sent' && !cs.sentAt) cs.sentAt = new Date().toISOString();
+  if (next==='sent'    && !cs.sentAt)    cs.sentAt    = new Date().toISOString();
   if (next==='replied' && !cs.repliedAt) cs.repliedAt = new Date().toISOString();
   cs.lastActivity = new Date().toISOString();
   const contact = CONTACTS.find(c => c.id===id);
-  if (contact) addActivity(next==='replied'?'replied':'sent', `${contact.name} marked as ${next.replace(/-/g,' ')}`, new Date().toISOString());
+  if (contact) { const type=next==='replied'?'replied':next==='draft-ready'?'draft':'sent'; addActivity(type,`${contact.name} → ${next.replace(/-/g,' ')}`,new Date().toISOString()); }
   saveState(); render();
 }
 
@@ -690,19 +746,18 @@ function filterCategory(cat, btn) {
 
 function addActivity(type, text, time) {
   if (!state.activity) state.activity = [];
-  state.activity.unshift({type, text, time});
+  state.activity.unshift({ type, text, time });
   if (state.activity.length > 50) state.activity = state.activity.slice(0,50);
 }
 
-// ─── UI HELPERS ───────────────────────────────────────────────────────────────
 function showLoading(title, msg) {
   document.getElementById('loadingTitle').textContent = title;
-  document.getElementById('loadingMsg').textContent = msg;
+  document.getElementById('loadingMsg').textContent   = msg;
   document.getElementById('loadingOverlay').classList.add('visible');
 }
 function hideLoading() { document.getElementById('loadingOverlay').classList.remove('visible'); }
 
-function showInfo(msg, isError = false) {
+function showInfo(msg, isError=false) {
   const bar = document.getElementById('infoBar');
   bar.textContent = msg;
   bar.className = 'info-bar visible' + (isError ? ' error' : '');
@@ -714,7 +769,6 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 4000);
 }
 
-// ─── INIT ─────────────────────────────────────────────────────────────────────
 loadState();
 
 if (state.lastSync) {
