@@ -180,6 +180,7 @@
     <button class="btn btn-outline" id="authBtn" onclick="handleAuth()">Connect</button>
     <button class="btn btn-outline" id="sheetBtn" onclick="syncSheet()" disabled>↓ Load Sheet</button>
     <button class="btn btn-primary" id="gmailBtn" onclick="runGmailSync()" disabled>↻ Gmail Sync</button>
+    <button class="btn btn-outline" id="patchBtn" onclick="patchFoodEditors()" disabled>✦ Patch Contacts</button>
   </div>
 </div>
 
@@ -284,7 +285,7 @@ const SHEET_ID = '1aZSVPEDS7PUF9eoaCOuGPpkC9TEZwUIDYBcDOcsqUug';
 const FOLLOW_UP_DAYS = 8;
 const SCOPES = [
   'https://www.googleapis.com/auth/gmail.readonly',
-  'https://www.googleapis.com/auth/spreadsheets.readonly'
+  'https://www.googleapis.com/auth/spreadsheets'
 ].join(' ');
 
 const TABS = [
@@ -378,6 +379,7 @@ function setAuthConnected() {
   document.getElementById('authBtn').textContent = 'Reconnect';
   document.getElementById('sheetBtn').disabled = false;
   document.getElementById('gmailBtn').disabled = false;
+  document.getElementById('patchBtn').disabled = false;
 }
 
 async function fetchTab(tabName) {
@@ -625,6 +627,7 @@ function handleAuthExpired() {
   document.getElementById('authStatus').className = 'auth-status disconnected';
   document.getElementById('sheetBtn').disabled = true;
   document.getElementById('gmailBtn').disabled = true;
+  document.getElementById('patchBtn').disabled = true;
   showToast('Session expired — click Connect to re-authenticate.');
 }
 
@@ -767,6 +770,74 @@ function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 4000);
+}
+
+const FOOD_EDITOR_PATCHES = [
+  { name: 'Bettina Makalintal', email: 'bettina@eater.com',        outlet: 'Eater',                                  role: 'Staff Writer, Food Culture' },
+  { name: 'Jaya Saxena',        email: 'jaya@weareravenous.com',   outlet: 'Ravenous',                               role: 'Founding Writer / Worker-Owner' },
+  { name: 'Oset Babür',         email: 'baburoset@gmail.com',      outlet: 'Freelance / Prix Fixe',                  role: 'Writer & Editor; Founder, Prix Fixe' },
+  { name: 'Khushbu Shah',       email: 'ks@khushbushah.com',       outlet: 'Freelance / Food & Wine (Contributing)', role: 'Freelance Food Writer & Contributing Editor' },
+  { name: 'Zaynab Issa',        email: 'zaynab@zaynabissa.com',    outlet: 'Freelance / Bon Appétit',                role: 'Freelance Food Editor & Creator' },
+  { name: 'Tammie Teclemariam', email: 'tammieetc@gmail.com',      outlet: 'Grub Street / New York Magazine',        role: 'Underground Gourmet / Food Critic & Writer' },
+];
+
+async function patchFoodEditors() {
+  if (!accessToken) { showToast('Connect Google first.'); return; }
+  showLoading('Patching Contacts', 'Reading Food Editors tab...');
+  try {
+    const range = encodeURIComponent("'Food Editors'!A:G");
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${range}`;
+    const res = await fetch(url, { headers: { Authorization: `Bearer ${accessToken}` } });
+    if (res.status === 401) { handleAuthExpired(); hideLoading(); return; }
+    if (!res.ok) throw new Error('Failed to read Food Editors tab: ' + res.status);
+    const data = await res.json();
+    const rows = data.values || [];
+
+    const batchData = [];
+    rows.forEach((row, i) => {
+      const rowName = (row[1] || '').trim();
+      const match = FOOD_EDITOR_PATCHES.find(p => {
+        const [first, ...rest] = p.name.toLowerCase().split(' ');
+        return rowName.toLowerCase().includes(first) && rowName.toLowerCase().includes(rest[rest.length - 1]);
+      });
+      if (!match) return;
+      const rowNum = i + 1;
+      // Col C (index 2) = Outlet, Col E (index 4) = Email, Col G (index 6) = Role
+      batchData.push({ range: `'Food Editors'!C${rowNum}`, values: [[match.outlet]] });
+      batchData.push({ range: `'Food Editors'!E${rowNum}`, values: [[match.email]] });
+      batchData.push({ range: `'Food Editors'!G${rowNum}`, values: [[match.role]] });
+      console.log(`Queued row ${rowNum}: ${match.name}`);
+    });
+
+    if (batchData.length === 0) {
+      hideLoading();
+      showInfo('No matching rows found — check name spellings against your sheet.', true);
+      showToast('No matches found in Food Editors tab.');
+      return;
+    }
+
+    document.getElementById('loadingMsg').textContent = `Writing ${batchData.length} cells...`;
+    const writeRes = await fetch(
+      `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values:batchUpdate`,
+      {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ valueInputOption: 'RAW', data: batchData }),
+      }
+    );
+    if (writeRes.status === 401) { handleAuthExpired(); hideLoading(); return; }
+    if (!writeRes.ok) throw new Error('Write failed: ' + writeRes.status);
+    const result = await writeRes.json();
+    hideLoading();
+    const matched = batchData.length / 3;
+    showInfo(`Patch complete — ${matched} contact${matched !== 1 ? 's' : ''} updated (${result.totalUpdatedCells} cells written).`);
+    showToast(`✓ ${result.totalUpdatedCells} cells updated in Food Editors tab.`);
+  } catch(err) {
+    hideLoading();
+    showInfo('Patch error: ' + err.message, true);
+    showToast('Patch failed — see error above.');
+    console.error(err);
+  }
 }
 
 loadState();
